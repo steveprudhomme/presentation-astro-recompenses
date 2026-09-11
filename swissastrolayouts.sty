@@ -1,0 +1,306 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{swissastrolayouts}[2026/09/10 v0.4.0 SwissAstro layout helpers]
+
+\RequirePackage{xparse}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{ragged2e}
+\RequirePackage{etoolbox}
+
+% Local 12-column grid -------------------------------------------------------
+% The page margin is defined by the theme. Components derive their widths from
+% the current \linewidth so the same system works inside normal frames.
+\newlength{\SwissAstroGridUnit}
+\newlength{\SwissAstroSpanA}
+\newlength{\SwissAstroSpanB}
+\newcommand{\SwissAstroGridInit}{%
+  \setlength{\SwissAstroGridUnit}{\dimexpr(\linewidth-11\SwissAstroGutter)/12\relax}%
+}
+\newcommand{\SwissAstroCalcSpan}[2]{%
+  \setlength{#2}{#1\SwissAstroGridUnit}%
+  \addtolength{#2}{\dimexpr#1\SwissAstroGutter-\SwissAstroGutter\relax}%
+}
+
+% Small semantic helpers -----------------------------------------------------
+\newcommand{\SwissAstroLead}[1]{%
+  {\SwissAstroTextSetup\fontsize{15}{17}\selectfont\bfseries\color{SwissInk}#1\par}%
+  \vspace{1.2mm}%
+}
+
+\newcommand{\SwissAstroSource}[1]{%
+  \par\vspace{1.2mm}%
+  {\SwissAstroTextSetup\usebeamerfont{swiss micro}\color{SwissMuted}\MakeUppercase{SOURCE / CRÉDIT}\enspace #1\par}%
+}
+
+\newcommand{\SwissAstroTakeaway}[1]{%
+  \par\vspace{2mm}%
+  \begin{beamercolorbox}[wd=\linewidth,sep=2.6mm,leftskip=1mm,rightskip=1mm]{swiss takeaway}
+    {\SwissAstroTextSetup\usebeamerfont{swiss takeaway}\color{SwissInk}#1\par}
+  \end{beamercolorbox}%
+}
+
+\NewDocumentCommand{\SwissAstroCard}{m +m}{%
+  \begin{beamercolorbox}[wd=\linewidth,sep=3mm,leftskip=0.5mm,rightskip=0.5mm]{swiss card}
+    {\SwissAstroTextSetup\usebeamerfont{swiss card title}\color{SwissInk}#1\par}%
+    \vspace{1.2mm}%
+    {\SwissAstroTextSetup\usebeamerfont{swiss card body}\color{SwissInk}#2\par}%
+  \end{beamercolorbox}%
+}
+
+\NewDocumentCommand{\SwissAstroNumberedCard}{m m +m}{%
+  \begin{beamercolorbox}[wd=\linewidth,sep=3mm,leftskip=0.5mm,rightskip=0.5mm]{swiss card}
+    {\SwissAstroTextSetup\usebeamerfont{swiss card number}\color{SwissAccent}#1\par}%
+    \vspace{0.8mm}%
+    {\SwissAstroTextSetup\usebeamerfont{swiss card title}\color{SwissInk}#2\par}%
+    \vspace{1.0mm}%
+    {\SwissAstroTextSetup\usebeamerfont{swiss card body}\color{SwissInk}#3\par}%
+  \end{beamercolorbox}%
+}
+
+% Open columns deliberately avoid grey cards. They are useful when structure
+% can be carried by alignment, scale and whitespace alone.
+\NewDocumentCommand{\SwissAstroOpenItem}{O{} m +m}{%
+  \begin{minipage}[t]{\linewidth}
+    \SwissAstroTextSetup
+    \ifstrempty{#1}{}{%
+      {\usebeamerfont{swiss card number}\color{SwissAccent}#1\par}%
+      \vspace{0.8mm}%
+    }%
+    {\usebeamerfont{swiss open title}\color{SwissInk}#2\par}%
+    \vspace{1.0mm}%
+    {\usebeamerfont{swiss open body}\color{SwissMuted}#3\par}%
+  \end{minipage}%
+}
+
+\NewDocumentCommand{\SwissAstroStep}{m m +m}{%
+  \begin{minipage}[t]{\linewidth}
+    \SwissAstroTextSetup
+    {\usebeamerfont{swiss step number}\color{SwissAccent}#1\par}%
+    \vspace{0.3mm}%
+    {\usebeamerfont{swiss step title}\color{SwissInk}#2\par}%
+    \vspace{0.8mm}%
+    {\usebeamerfont{swiss card body}\color{SwissMuted}#3\par}%
+  \end{minipage}%
+}
+
+\NewDocumentCommand{\SwissAstroTimelineItem}{m m +m}{%
+  \begin{minipage}[t]{\linewidth}
+    \SwissAstroTextSetup
+    {\usebeamerfont{swiss timeline year}\color{SwissAccent}#1\par}%
+    \vspace{0.5mm}%
+    {\usebeamerfont{swiss step title}\color{SwissInk}#2\par}%
+    \vspace{0.8mm}%
+    {\usebeamerfont{swiss card body}\color{SwissMuted}#3\par}%
+  \end{minipage}%
+}
+
+% 12-column systems ----------------------------------------------------------
+\NewDocumentCommand{\SwissAstroGridPair}{m m +m +m}{%
+  \begingroup
+  \SwissAstroGridInit
+  \SwissAstroCalcSpan{#1}{\SwissAstroSpanA}%
+  \SwissAstroCalcSpan{#2}{\SwissAstroSpanB}%
+  \noindent
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#3\end{minipage}%
+  \hspace{\SwissAstroGutter}%
+  \begin{minipage}[t]{\SwissAstroSpanB}\SwissAstroTextSetup#4\end{minipage}%
+  \endgroup
+}
+
+% Compatibility API. With no optional ratios it now follows the strict 6+6
+% grid. Explicit decimal ratios remain available for legacy documents.
+\NewDocumentCommand{\SwissAstroTwoColumns}{O{} O{} +m +m}{%
+  \ifstrempty{#1}{%
+    \SwissAstroGridPair{6}{6}{#3}{#4}%
+  }{%
+    \begin{columns}[T,onlytextwidth]
+      \column{#1\textwidth}\SwissAstroTextSetup#3
+      \column{#2\textwidth}\SwissAstroTextSetup#4
+    \end{columns}%
+  }%
+}
+
+\NewDocumentCommand{\SwissAstroThreeColumns}{+m +m +m}{%
+  \begingroup\SwissAstroGridInit
+  \SwissAstroCalcSpan{4}{\SwissAstroSpanA}%
+  \noindent
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#1\end{minipage}%
+  \hspace{\SwissAstroGutter}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#2\end{minipage}%
+  \hspace{\SwissAstroGutter}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#3\end{minipage}%
+  \endgroup
+}
+
+\NewDocumentCommand{\SwissAstroFourColumns}{+m +m +m +m}{%
+  \begingroup\SwissAstroGridInit
+  \SwissAstroCalcSpan{3}{\SwissAstroSpanA}%
+  \noindent
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#1\end{minipage}%
+  \hspace{\SwissAstroGutter}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#2\end{minipage}%
+  \hspace{\SwissAstroGutter}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#3\end{minipage}%
+  \hspace{\SwissAstroGutter}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#4\end{minipage}%
+  \endgroup
+}
+
+% Open-grid recipes: same geometry as cards, less dashboard-like.
+\NewDocumentCommand{\SwissAstroOpenThree}{m +m m +m m +m}{%
+  \SwissAstroThreeColumns{\SwissAstroOpenItem{#1}{#2}}{\SwissAstroOpenItem{#3}{#4}}{\SwissAstroOpenItem{#5}{#6}}%
+}
+\NewDocumentCommand{\SwissAstroOpenFour}{m +m m +m m +m m +m}{%
+  \SwissAstroFourColumns{\SwissAstroOpenItem{#1}{#2}}{\SwissAstroOpenItem{#3}{#4}}{\SwissAstroOpenItem{#5}{#6}}{\SwissAstroOpenItem{#7}{#8}}%
+}
+
+% A restrained process component whose geometry matches the grid rather than
+% a generic flow-chart aesthetic.
+\NewDocumentCommand{\SwissAstroProcessThree}{m +m m +m m +m}{%
+  \SwissAstroThreeColumns{%
+    \SwissAstroOpenItem[01]{#1}{#2}%
+  }{%
+    \SwissAstroOpenItem[02]{#3}{#4}%
+  }{%
+    \SwissAstroOpenItem[03]{#5}{#6}%
+  }%
+  \vspace{1.4mm}\par
+  {\color{SwissRule}\rule{\linewidth}{0.55pt}}%
+}
+
+% Image helpers --------------------------------------------------------------
+\NewDocumentCommand{\SwissAstroImageBlock}{O{0.45\textheight} m m m}{%
+  \includegraphics[width=\linewidth,height=#1,keepaspectratio]{#2}%
+  \par\vspace{1.0mm}%
+  {\SwissAstroTextSetup\usebeamerfont{swiss image caption}\color{SwissInk}#3\par}%
+  \if\relax\detokenize{#4}\relax\else
+    {\SwissAstroTextSetup\usebeamerfont{swiss micro}\color{SwissMuted}#4\par}%
+  \fi
+}
+
+\NewDocumentCommand{\SwissAstroImageOnly}{O{0.55\textheight} m}{%
+  \includegraphics[width=\linewidth,height=#1,keepaspectratio]{#2}%
+}
+
+% Fundamental layout helpers -------------------------------------------------
+% One family, reversible: text + image is not split into two separate layouts.
+\NewDocumentCommand{\SwissAstroMediaText}{O{left} O{} O{} m m m +m}{%
+  \ifstrempty{#2}{%
+    % New default: exact 5+7 grid.
+    \ifstrequal{#1}{right}{%
+      \SwissAstroGridPair{7}{5}{#7}{\SwissAstroImageBlock[0.47\textheight]{#4}{#5}{#6}}%
+    }{%
+      \SwissAstroGridPair{5}{7}{\SwissAstroImageBlock[0.47\textheight]{#4}{#5}{#6}}{#7}%
+    }%
+  }{%
+    % Backward-compatible v0.3.x decimal ratios, e.g. [0.43][0.49].
+    \ifstrequal{#1}{right}{%
+      \SwissAstroTwoColumns[#3][#2]{#7}{\SwissAstroImageBlock[0.47\textheight]{#4}{#5}{#6}}%
+    }{%
+      \SwissAstroTwoColumns[#2][#3]{\SwissAstroImageBlock[0.47\textheight]{#4}{#5}{#6}}{#7}%
+    }%
+  }%
+}
+
+% Data layout: proof first, interpretation second, expressed as 8+4 columns.
+\NewDocumentCommand{\SwissAstroDataColumns}{+m +m}{%
+  \SwissAstroGridPair{8}{4}{#1}{#2}%
+}
+
+% Scientific figure: figure + caption/source + reading notes, also 8+4.
+\NewDocumentCommand{\SwissAstroScientificFigure}{m m m +m}{%
+  \SwissAstroGridPair{8}{4}{%
+    \SwissAstroImageBlock[0.45\textheight]{#1}{#2}{#3}%
+  }{#4}%
+}
+
+% Dominant-image frame. Best results come from a 16:9 image or an image that can
+% tolerate some cropping/letterboxing at presentation aspect ratio.
+\NewDocumentCommand{\SwissAstroFullImageFrame}{m m +m m}{%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[SwissDark] (current page.south west) rectangle (current page.north east);
+      \node[anchor=center,inner sep=0pt]
+        at (current page.center)
+        {\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#1}};
+      \fill[SwissPaper]
+        (current page.south west) rectangle
+        ([xshift=.62\paperwidth,yshift=25mm]current page.south west);
+      \fill[SwissAccent]
+        ([xshift=\SwissAstroMargin,yshift=20mm]current page.south west) rectangle
+        ([xshift=23mm,yshift=21mm]current page.south west);
+      \node[anchor=south west,text=SwissMuted]
+        at ([xshift=\SwissAstroMargin,yshift=16mm]current page.south west)
+        {\usebeamerfont{swiss kicker}\MakeUppercase{#2}};
+      \node[anchor=north west,text width=.53\paperwidth,align=left,text=SwissInk]
+        at ([xshift=\SwissAstroMargin,yshift=14mm]current page.south west)
+        {\SwissAstroTextSetup\fontsize{23}{24}\selectfont\bfseries #3};
+      \node[anchor=south east,text=SwissMuted]
+        at ([xshift=-\SwissAstroMargin,yshift=4mm]current page.south east)
+        {\usebeamerfont{swiss micro}#4};
+    \end{tikzpicture}
+    \null
+  \end{frame}%
+}
+
+% Comparison and data helpers ------------------------------------------------
+\NewDocumentCommand{\SwissAstroCompare}{m +m m +m}{%
+  \SwissAstroGridPair{6}{6}{%
+    \SwissAstroTag{#1}\vspace{1.6mm}#2
+  }{%
+    \SwissAstroTag{#3}\vspace{1.6mm}#4
+  }%
+}
+
+\NewDocumentCommand{\SwissAstroMetric}{m m m}{%
+  \begin{minipage}[t]{\linewidth}
+    \SwissAstroTextSetup
+    {\usebeamerfont{swiss metric value}\color{SwissInk}#1\par}%
+    {\usebeamerfont{swiss metric unit}\color{SwissAccent}#2\par}%
+    \vspace{0.5mm}%
+    {\usebeamerfont{swiss stat label}\color{SwissMuted}\MakeUppercase{#3}\par}%
+  \end{minipage}%
+}
+
+% Table of contents and closing patterns ------------------------------------
+\newcommand{\SwissAstroAgenda}[1][Plan de la présentation]{%
+  \begin{frame}{#1}
+    \vspace{1mm}
+    \tableofcontents[hideallsubsections]
+  \end{frame}%
+}
+
+\NewDocumentCommand{\SwissAstroStatementFrame}{m +m m}{%
+  \begin{SwissAstroDarkFrame}
+    \vfill
+    \SwissAstroTag{#1}
+    \vspace{5mm}
+    {\SwissAstroTextSetup\fontsize{28}{31}\selectfont\bfseries\color{SwissWhite}#2\par}
+    \vspace{6mm}
+    {\color{SwissRule}\rule{0.45\linewidth}{0.7pt}}\par
+    \vspace{2.5mm}
+    {\SwissAstroTextSetup\small\color{SwissRule}#3\par}
+    \vfill
+  \end{SwissAstroDarkFrame}%
+}
+
+\NewDocumentCommand{\SwissAstroClosingFrame}{m m}{%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[SwissPaper] (current page.south west) rectangle (current page.north east);
+      \node[anchor=north west,text=SwissMuted]
+        at ([xshift=\SwissAstroMargin,yshift=-7mm]current page.north west)
+        {\usebeamerfont{swiss kicker}\MakeUppercase{\swissastro@series\ / FIN}};
+      \draw[SwissInk,line width=.65pt]
+        ([xshift=\SwissAstroMargin,yshift=-12mm]current page.north west) -- ([xshift=-\SwissAstroMargin,yshift=-12mm]current page.north east);
+      \node[anchor=west] at ([xshift=\SwissAstroMargin,yshift=13mm]current page.west){\SwissAstroMark[SwissAccent]};
+      \node[anchor=west,text width=.72\paperwidth,align=left,text=SwissInk]
+        at ([xshift=\SwissAstroMargin,yshift=-2mm]current page.west)
+        {\SwissAstroTextSetup\fontsize{34}{35}\selectfont\bfseries #1};
+      \node[anchor=south west,text=SwissMuted,text width=.70\paperwidth,align=left]
+        at ([xshift=\SwissAstroMargin,yshift=8mm]current page.south west)
+        {\SwissAstroTextSetup\small #2};
+    \end{tikzpicture}
+    \null
+  \end{frame}%
+}

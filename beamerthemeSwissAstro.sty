@@ -1,0 +1,145 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeSwissAstro}[2026/09/10 v0.4.0 Swiss-inspired astronomy Beamer theme]
+
+\mode<presentation>
+
+\newif\ifSwissAstro@sectionpages
+\newif\ifSwissAstro@progress
+\SwissAstro@sectionpagestrue
+\SwissAstro@progresstrue
+
+\DeclareOptionBeamer{nosectionpages}{\SwissAstro@sectionpagesfalse}
+\DeclareOptionBeamer{noprogress}{\SwissAstro@progressfalse}
+\ProcessOptionsBeamer
+
+\RequirePackage{etoolbox}
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+\RequirePackage{calc}
+\RequirePackage{ragged2e}
+\RequirePackage{microtype}
+
+% --- Master grid -----------------------------------------------------------
+% One horizontal axis and one gutter system drive title pages, frame titles,
+% footers and reusable layouts. 8 mm ~= 22.7 pt, close to the axis used in the
+% original SwissAstro deck while remaining practical on 16:9 Beamer pages.
+\newlength{\SwissAstroMargin}
+\newlength{\SwissAstroGutter}
+\setlength{\SwissAstroMargin}{8mm}
+\setlength{\SwissAstroGutter}{2.8mm}
+
+% Swiss-style text setting: flush left, ragged right and no visual hyphenation.
+% The emergency stretch is only a safety valve for very narrow components.
+\newcommand{\SwissAstroTextSetup}{%
+  \RaggedRight\sloppy
+  \hyphenpenalty=10000\exhyphenpenalty=10000%
+  \emergencystretch=1.5em%
+}
+
+\usecolortheme{SwissAstro}
+\usefonttheme{SwissAstro}
+\useinnertheme{SwissAstro}
+\useoutertheme{SwissAstro}
+\RequirePackage{swissastrolayouts}
+
+\setbeamersize{text margin left=\SwissAstroMargin,text margin right=\SwissAstroMargin}
+% Top-align frame bodies: the Swiss editorial grid depends on predictable vertical rhythm.
+\beamer@centeredfalse
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{bibliography item}[text]
+
+% Keep lists aligned to the same typographic logic as surrounding text.
+\setbeamertemplate{itemize/enumerate body begin}{\SwissAstroTextSetup}
+\setbeamertemplate{itemize/enumerate subbody begin}{\SwissAstroTextSetup}
+
+% --- Public helpers ---------------------------------------------------------
+\newcommand{\SwissAstroSetAccent}[1]{\definecolor{SwissAccent}{HTML}{#1}}
+
+\newcommand{\SwissAstroMark}[1][SwissAccent]{%
+  \begin{tikzpicture}[baseline=-0.55ex,scale=0.10]
+    \foreach \a in {0,45,...,315}{\draw[#1,line width=1.15pt] (0,0)--(\a:1);}
+  \end{tikzpicture}%
+}
+
+\newcommand{\SwissAstroRule}{%
+  \par\vspace{1.0mm}%
+  {\color{SwissInk}\rule{\linewidth}{0.7pt}}%
+  \par\vspace{1.8mm}%
+}
+
+\newcommand{\SwissAstroTag}[1]{%
+  \par\noindent
+  \begingroup
+  \setlength{\fboxsep}{1.45mm}%
+  \colorbox{SwissAccent}{\color{SwissWhite}\usebeamerfont{swiss tag}\strut\MakeUppercase{#1}}%
+  \endgroup
+  \par
+}
+
+\newcommand{\SwissAstroStat}[2]{%
+  \begin{minipage}[t]{0.29\linewidth}
+    \SwissAstroTextSetup
+    {\usebeamerfont{swiss stat value}\color{SwissInk}#1\par}
+    \vspace{0.5mm}
+    {\usebeamerfont{swiss stat label}\color{SwissMuted}\MakeUppercase{#2}\par}
+  \end{minipage}%
+}
+
+\newcommand{\SwissAstroBigNumber}[2]{%
+  \par\noindent
+  \begin{minipage}[t]{\linewidth}
+    \SwissAstroTextSetup
+    {\usebeamerfont{swiss big number}\color{SwissInk}#1\par}
+    \vspace{-0.5mm}
+    {\usebeamerfont{swiss stat label}\color{SwissMuted}\MakeUppercase{#2}\par}
+  \end{minipage}%
+  \par
+}
+
+\newcommand{\SwissAstroQuote}[2]{%
+  \begin{beamercolorbox}[wd=\linewidth,sep=5mm,leftskip=0mm]{swiss quote}
+    \SwissAstroTextSetup
+    {\usebeamerfont{swiss quote}\color{SwissInk}``#1''\par}
+    \vspace{2mm}
+    {\usebeamerfont{swiss quote source}\color{SwissMuted}#2\par}
+  \end{beamercolorbox}%
+}
+
+% Optional construction overlay for theme development. It is intentionally
+% manual: call it only on frames where alignment needs to be inspected.
+\newcommand{\SwissAstroGridOverlay}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \pgfmathsetlengthmacro{\SwissAstroGridAvail}{\paperwidth-2\SwissAstroMargin}
+    \pgfmathsetlengthmacro{\SwissAstroGridCol}{(\SwissAstroGridAvail-11\SwissAstroGutter)/12}
+    \foreach \i in {0,...,11}{%
+      \pgfmathsetlengthmacro{\SwissAstroGridX}{\SwissAstroMargin+\i*(\SwissAstroGridCol+\SwissAstroGutter)}
+      \fill[SwissAccent,opacity=.055]
+        ([xshift=\SwissAstroGridX]current page.south west) rectangle
+        ([xshift=\dimexpr\SwissAstroGridX+\SwissAstroGridCol\relax]current page.north west);
+    }
+  \end{tikzpicture}%
+}
+
+\newenvironment{SwissAstroDarkFrame}[1][]{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=SwissDark}
+  \setbeamercolor{normal text}{fg=SwissWhite,bg=SwissDark}
+  \setbeamercolor{structure}{fg=SwissWhite}
+  \setbeamercolor{frametitle}{fg=SwissWhite,bg=SwissDark}
+  \setbeamercolor{framesubtitle}{fg=SwissRule,bg=SwissDark}
+  \begin{frame}[plain,#1]
+  \color{SwissWhite}\SwissAstroTextSetup
+}{%
+  \end{frame}
+  \endgroup
+}
+
+\ifSwissAstro@sectionpages
+  \AtBeginSection[]{%
+    \begin{frame}[plain]
+      \sectionpage
+    \end{frame}
+  }
+\fi
+
+\mode<all>

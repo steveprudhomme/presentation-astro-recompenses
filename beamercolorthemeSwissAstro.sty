@@ -1,0 +1,36 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamercolorthemeSwissAstro}[2026/09/10 v0.4.0 SwissAstro color theme]
+
+\mode<presentation>
+
+\definecolor{SwissPaper}{HTML}{F1EFE8}
+\definecolor{SwissInk}{HTML}{111111}
+\definecolor{SwissDark}{HTML}{303236}
+% Darker than v0.3.0 for reliable projector contrast on the ivory paper.
+\definecolor{SwissMuted}{HTML}{5F625F}
+\definecolor{SwissRule}{HTML}{C9C6BD}
+\definecolor{SwissSoft}{HTML}{E5E2D9}
+% Slightly deeper vermilion: white labels now clear WCAG AA contrast (~4.9:1).
+\definecolor{SwissAccent}{HTML}{C64627}
+\definecolor{SwissWhite}{HTML}{FAF9F5}
+
+\setbeamercolor{background canvas}{bg=SwissPaper}
+\setbeamercolor{normal text}{fg=SwissInk,bg=SwissPaper}
+\setbeamercolor{structure}{fg=SwissInk}
+\setbeamercolor{alerted text}{fg=SwissAccent}
+\setbeamercolor{title}{fg=SwissInk}
+\setbeamercolor{subtitle}{fg=SwissMuted}
+\setbeamercolor{author}{fg=SwissInk}
+\setbeamercolor{date}{fg=SwissMuted}
+\setbeamercolor{frametitle}{fg=SwissInk,bg=SwissPaper}
+\setbeamercolor{framesubtitle}{fg=SwissMuted,bg=SwissPaper}
+\setbeamercolor{footline}{fg=SwissMuted,bg=SwissPaper}
+\setbeamercolor{block title}{fg=SwissInk,bg=SwissSoft}
+\setbeamercolor{block body}{fg=SwissInk,bg=SwissSoft}
+\setbeamercolor{block title alerted}{fg=SwissWhite,bg=SwissAccent}
+\setbeamercolor{block body alerted}{fg=SwissInk,bg=SwissSoft}
+\setbeamercolor{swiss quote}{fg=SwissInk,bg=SwissSoft}
+\setbeamercolor{swiss card}{fg=SwissInk,bg=SwissSoft}
+\setbeamercolor{swiss takeaway}{fg=SwissInk,bg=SwissSoft}
+
+\mode<all>

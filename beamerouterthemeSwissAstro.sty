@@ -1,0 +1,49 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerouterthemeSwissAstro}[2026/09/10 v0.4.0 SwissAstro outer theme]
+
+\mode<presentation>
+
+\setbeamertemplate{headline}{}
+
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,leftskip=\SwissAstroMargin,rightskip=\SwissAstroMargin,sep=0pt]{frametitle}
+    \vspace{4.2mm}
+    {\SwissAstroTextSetup\usebeamerfont{swiss kicker}\color{SwissMuted}%
+      \ifstrempty{\insertsectionhead}{\MakeUppercase{\swissastro@series}}{\MakeUppercase{\insertsectionhead}}\par}
+    \vspace{1.2mm}
+    {\SwissAstroTextSetup\usebeamerfont{frametitle}\insertframetitle\par}
+    \ifx\insertframesubtitle\@empty\else
+      \vspace{0.8mm}{\SwissAstroTextSetup\usebeamerfont{framesubtitle}\color{SwissMuted}\insertframesubtitle\par}
+    \fi
+    \vspace{2.3mm}
+    {\color{SwissInk}\rule{\dimexpr\paperwidth-2\SwissAstroMargin\relax}{0.65pt}}
+    \vspace{1.5mm}
+  \end{beamercolorbox}%
+  \vspace{-9mm}% tighten the editorial grid after Beamer's title box
+}
+
+% The footer is intentionally quiet: author + frame number only. Repeating the
+% full talk title on every slide competed with the main content in v0.3.x.
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth,ht=4.9mm,dp=1.25mm,leftskip=\SwissAstroMargin,rightskip=\SwissAstroMargin]{footline}
+    \usebeamerfont{footline}%
+    \raisebox{-0.2mm}{\MakeUppercase{\insertshortauthor}}%
+    \hfill
+    \textbf{\insertframenumber}\,/\,\inserttotalframenumber
+  \end{beamercolorbox}%
+  \ifSwissAstro@progress
+    \ifnum\inserttotalframenumber>0
+      \pgfmathsetlengthmacro{\SwissAstroProgressWidth}{\paperwidth*\insertframenumber/\inserttotalframenumber}%
+      \begin{tikzpicture}[remember picture,overlay]
+        \fill[SwissRule] (current page.south west) rectangle
+          ([yshift=0.65mm]current page.south east);
+        \fill[SwissAccent] (current page.south west) rectangle
+          ([xshift=\SwissAstroProgressWidth,yshift=0.65mm]current page.south west);
+      \end{tikzpicture}%
+    \fi
+  \fi
+}
+
+\mode<all>

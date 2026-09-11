@@ -1,0 +1,138 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerinnerthemeSwissAstro}[2026/09/10 v0.4.0 SwissAstro inner theme]
+
+\mode<presentation>
+
+\newif\ifSwissAstro@hastitleimage
+\SwissAstro@hastitleimagefalse
+\def\swissastro@titleimage{}
+\def\swissastro@kicker{ASTRONOMIE / CONFÉRENCE}
+\def\swissastro@series{SWISS ASTRO}
+\def\swissastro@sectionsubtitle{}
+
+\newcommand{\SwissAstroTitleImage}[1]{%
+  \gdef\swissastro@titleimage{#1}%
+  \global\SwissAstro@hastitleimagetrue
+}
+\newcommand{\SwissAstroKicker}[1]{\gdef\swissastro@kicker{#1}}
+\newcommand{\SwissAstroSeries}[1]{\gdef\swissastro@series{#1}}
+\newcommand{\SwissAstroSectionSubtitle}[1]{\gdef\swissastro@sectionsubtitle{#1}}
+
+\setbeamertemplate{itemize item}{\raise0.25ex\hbox{\rule{0.8ex}{0.8ex}}}
+\setbeamertemplate{itemize subitem}{\raise0.35ex\hbox{\rule{0.55ex}{0.55ex}}}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{caption label separator}{\enspace/\enspace}
+\setbeamertemplate{caption}[numbered]
+
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[SwissPaper] (current page.south west) rectangle (current page.north east);
+
+    \node[anchor=north west,text=SwissMuted]
+      at ([xshift=\SwissAstroMargin,yshift=-7mm]current page.north west)
+      {\usebeamerfont{swiss kicker}\MakeUppercase{\swissastro@kicker}};
+    \node[anchor=north east,text=SwissMuted]
+      at ([xshift=-\SwissAstroMargin,yshift=-7mm]current page.north east)
+      {\usebeamerfont{swiss micro}\MakeUppercase{\swissastro@series}};
+
+    \draw[SwissInk,line width=0.65pt]
+      ([xshift=\SwissAstroMargin,yshift=-12mm]current page.north west) --
+      ([xshift=-\SwissAstroMargin,yshift=-12mm]current page.north east);
+
+    % The registration mark is a deliberate signature used only at the opening
+    % and closing, not as a repeated decorative element on section pages.
+    \node[anchor=west] at ([xshift=\SwissAstroMargin,yshift=23mm]current page.west)
+      {\SwissAstroMark[SwissAccent]};
+
+    \node[anchor=west,text width=0.55\paperwidth,align=left,text=SwissInk]
+      at ([xshift=\SwissAstroMargin,yshift=8mm]current page.west)
+      {\SwissAstroTextSetup\usebeamerfont{title}\inserttitle};
+
+    \node[anchor=north west,text width=0.53\paperwidth,align=left,text=SwissMuted]
+      at ([xshift=\SwissAstroMargin,yshift=-15mm]current page.west)
+      {\SwissAstroTextSetup\usebeamerfont{subtitle}\insertsubtitle};
+
+    \ifSwissAstro@hastitleimage
+      \node[anchor=south east,inner sep=0pt]
+        at ([xshift=-\SwissAstroMargin,yshift=14mm]current page.south east)
+        {\includegraphics[width=50mm,height=55mm,keepaspectratio]{\swissastro@titleimage}};
+    \else
+      \begin{scope}
+        \clip ([xshift=-58mm,yshift=14mm]current page.south east) rectangle
+              ([xshift=-\SwissAstroMargin,yshift=-14mm]current page.north east);
+        \fill[SwissDark] ([xshift=-58mm,yshift=14mm]current page.south east) rectangle
+                         ([xshift=-\SwissAstroMargin,yshift=-14mm]current page.north east);
+        \foreach \x/\y/\r in {0.10/0.15/0.7,0.20/0.62/0.5,0.33/0.41/0.6,0.46/0.83/0.4,0.54/0.23/0.5,0.67/0.57/0.8,0.74/0.73/0.5,0.88/0.35/0.55}{
+          \fill[SwissWhite] ([xshift={-58mm+50mm*\x},yshift={14mm+55mm*\y}]current page.south east) circle (\r pt);
+        }
+        \draw[SwissAccent,line width=1.5pt]
+          ([xshift=-49mm,yshift=28mm]current page.south east) circle (11mm);
+      \end{scope}
+    \fi
+
+    \draw[SwissInk,line width=0.65pt]
+      ([xshift=\SwissAstroMargin,yshift=13mm]current page.south west) --
+      ([xshift=86mm,yshift=13mm]current page.south west);
+    \node[anchor=south west,text=SwissInk]
+      at ([xshift=\SwissAstroMargin,yshift=7mm]current page.south west)
+      {\usebeamerfont{author}\insertauthor};
+    \node[anchor=south west,text=SwissMuted]
+      at ([xshift=\SwissAstroMargin,yshift=3.6mm]current page.south west)
+      {\usebeamerfont{date}\insertinstitute\hspace{2mm}/\hspace{2mm}\insertdate};
+  \end{tikzpicture}%
+  \null
+}
+
+\setbeamertemplate{section page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[SwissPaper] (current page.south west) rectangle (current page.north east);
+    \node[anchor=north west,text=SwissMuted]
+      at ([xshift=\SwissAstroMargin,yshift=-7mm]current page.north west)
+      {\usebeamerfont{swiss kicker}\MakeUppercase{\swissastro@series\ / SECTION}};
+    \draw[SwissInk,line width=0.65pt]
+      ([xshift=\SwissAstroMargin,yshift=-16mm]current page.north west) --
+      ([xshift=-\SwissAstroMargin,yshift=-16mm]current page.north east);
+
+    \node[anchor=west,text=SwissAccent]
+      at ([xshift=\SwissAstroMargin,yshift=17mm]current page.west)
+      {\usebeamerfont{section number}\ifnum\insertsectionnumber<10 0\fi\insertsectionnumber};
+    \node[anchor=west,text width=0.82\paperwidth,align=left,text=SwissInk]
+      at ([xshift=\SwissAstroMargin,yshift=-8mm]current page.west)
+      {\SwissAstroTextSetup\usebeamerfont{section page}\insertsectionhead};
+    \ifstrempty{\swissastro@sectionsubtitle}{}{
+      \node[anchor=north west,text width=0.72\paperwidth,align=left,text=SwissMuted]
+        at ([xshift=\SwissAstroMargin,yshift=-25mm]current page.west)
+        {\SwissAstroTextSetup\usebeamerfont{subtitle}\swissastro@sectionsubtitle};
+    }
+    \node[anchor=south east,text=SwissMuted]
+      at ([xshift=-\SwissAstroMargin,yshift=8mm]current page.south east)
+      {\usebeamerfont{swiss micro}\MakeUppercase{\insertshorttitle}};
+  \end{tikzpicture}%
+  \null
+}
+
+\setbeamertemplate{block begin}{%
+  \par\vskip\medskipamount
+  \begin{beamercolorbox}[colsep*=0ex,sep=2.8mm,leftskip=1mm,rightskip=1mm]{block title}
+    \SwissAstroTextSetup\usebeamerfont{block title}\insertblocktitle
+  \end{beamercolorbox}
+  {\parskip0pt\par}
+  \usebeamerfont{block body}
+  \begin{beamercolorbox}[colsep*=0ex,sep=2.8mm,leftskip=1mm,rightskip=1mm,vmode]{block body}
+  \SwissAstroTextSetup
+}
+\setbeamertemplate{block end}{\end{beamercolorbox}\vskip\smallskipamount}
+
+\setbeamertemplate{block alerted begin}{%
+  \par\vskip\medskipamount
+  \begin{beamercolorbox}[colsep*=0ex,sep=2.8mm,leftskip=1mm,rightskip=1mm]{block title alerted}
+    \SwissAstroTextSetup\usebeamerfont{block title}\insertblocktitle
+  \end{beamercolorbox}
+  {\parskip0pt\par}
+  \usebeamerfont{block body}
+  \begin{beamercolorbox}[colsep*=0ex,sep=2.8mm,leftskip=1mm,rightskip=1mm,vmode]{block body alerted}
+  \SwissAstroTextSetup
+}
+\setbeamertemplate{block alerted end}{\end{beamercolorbox}\vskip\smallskipamount}
+
+\mode<all>
