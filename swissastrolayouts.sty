@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{swissastrolayouts}[2026/09/10 v0.4.0 SwissAstro layout helpers]
+\ProvidesPackage{swissastrolayouts}[2026/09/11 v0.4.1 SwissAstro layout helpers]
 
 \RequirePackage{xparse}
 \RequirePackage{graphicx}
@@ -23,13 +23,14 @@
 
 % Small semantic helpers -----------------------------------------------------
 \newcommand{\SwissAstroLead}[1]{%
-  {\SwissAstroTextSetup\fontsize{15}{17}\selectfont\bfseries\color{SwissInk}#1\par}%
-  \vspace{1.2mm}%
+  {\fontsize{15}{17}\selectfont\bfseries\SwissAstroHeadingSetup\color{SwissInk}#1\par}%
+  \vspace{\SwissAstroSpaceS}%
 }
 
 \newcommand{\SwissAstroSource}[1]{%
-  \par\vspace{1.2mm}%
-  {\SwissAstroTextSetup\usebeamerfont{swiss micro}\color{SwissMuted}\MakeUppercase{SOURCE / CRÉDIT}\enspace #1\par}%
+  \par\vspace{\SwissAstroSpaceS}%
+  {\usebeamerfont{swiss micro}\SwissAstroTextSetup\color{SwissMuted}%
+    \MakeUppercase{SOURCE / CRÉDIT}\enspace #1\par}%
 }
 
 \newcommand{\SwissAstroTakeaway}[1]{%
@@ -39,21 +40,39 @@
   \end{beamercolorbox}%
 }
 
-\NewDocumentCommand{\SwissAstroCard}{m +m}{%
+\NewDocumentCommand{\SwissAstroCard}{O{} m +m}{%
   \begin{beamercolorbox}[wd=\linewidth,sep=3mm,leftskip=0.5mm,rightskip=0.5mm]{swiss card}
-    {\SwissAstroTextSetup\usebeamerfont{swiss card title}\color{SwissInk}#1\par}%
-    \vspace{1.2mm}%
-    {\SwissAstroTextSetup\usebeamerfont{swiss card body}\color{SwissInk}#2\par}%
+    \ifstrempty{#1}{%
+      {\usebeamerfont{swiss card title}\SwissAstroHeadingSetup\color{SwissInk}#2\par}%
+      \vspace{1.4mm}%
+      {\usebeamerfont{swiss card body}\SwissAstroTextSetup\color{SwissInk}#3\par}%
+    }{%
+      \begin{minipage}[t][#1][t]{\dimexpr\linewidth-7mm\relax}
+        {\usebeamerfont{swiss card title}\SwissAstroHeadingSetup\color{SwissInk}#2\par}%
+        \vspace{1.4mm}%
+        {\usebeamerfont{swiss card body}\SwissAstroTextSetup\color{SwissInk}#3\par}%
+      \end{minipage}%
+    }%
   \end{beamercolorbox}%
 }
 
-\NewDocumentCommand{\SwissAstroNumberedCard}{m m +m}{%
+\NewDocumentCommand{\SwissAstroNumberedCard}{O{} m m +m}{%
   \begin{beamercolorbox}[wd=\linewidth,sep=3mm,leftskip=0.5mm,rightskip=0.5mm]{swiss card}
-    {\SwissAstroTextSetup\usebeamerfont{swiss card number}\color{SwissAccent}#1\par}%
-    \vspace{0.8mm}%
-    {\SwissAstroTextSetup\usebeamerfont{swiss card title}\color{SwissInk}#2\par}%
-    \vspace{1.0mm}%
-    {\SwissAstroTextSetup\usebeamerfont{swiss card body}\color{SwissInk}#3\par}%
+    \ifstrempty{#1}{%
+      {\usebeamerfont{swiss card number}\SwissAstroHeadingSetup\color{SwissAccent}#2\par}%
+      \vspace{1.3mm}%
+      {\usebeamerfont{swiss card title}\SwissAstroHeadingSetup\color{SwissInk}#3\par}%
+      \vspace{1.2mm}%
+      {\usebeamerfont{swiss card body}\SwissAstroTextSetup\color{SwissInk}#4\par}%
+    }{%
+      \begin{minipage}[t][#1][t]{\dimexpr\linewidth-7mm\relax}
+        {\usebeamerfont{swiss card number}\SwissAstroHeadingSetup\color{SwissAccent}#2\par}%
+        \vspace{1.3mm}%
+        {\usebeamerfont{swiss card title}\SwissAstroHeadingSetup\color{SwissInk}#3\par}%
+        \vspace{1.2mm}%
+        {\usebeamerfont{swiss card body}\SwissAstroTextSetup\color{SwissInk}#4\par}%
+      \end{minipage}%
+    }%
   \end{beamercolorbox}%
 }
 
@@ -63,11 +82,11 @@
   \begin{minipage}[t]{\linewidth}
     \SwissAstroTextSetup
     \ifstrempty{#1}{}{%
-      {\usebeamerfont{swiss card number}\color{SwissAccent}#1\par}%
-      \vspace{0.8mm}%
+      {\usebeamerfont{swiss card number}\SwissAstroHeadingSetup\color{SwissAccent}#1\par}%
+      \vspace{1.4mm}%
     }%
-    {\usebeamerfont{swiss open title}\color{SwissInk}#2\par}%
-    \vspace{1.0mm}%
+    {\usebeamerfont{swiss open title}\SwissAstroHeadingSetup\color{SwissInk}#2\par}%
+    \vspace{1.4mm}%
     {\usebeamerfont{swiss open body}\color{SwissMuted}#3\par}%
   \end{minipage}%
 }
@@ -75,10 +94,10 @@
 \NewDocumentCommand{\SwissAstroStep}{m m +m}{%
   \begin{minipage}[t]{\linewidth}
     \SwissAstroTextSetup
-    {\usebeamerfont{swiss step number}\color{SwissAccent}#1\par}%
-    \vspace{0.3mm}%
-    {\usebeamerfont{swiss step title}\color{SwissInk}#2\par}%
-    \vspace{0.8mm}%
+    {\usebeamerfont{swiss step number}\SwissAstroHeadingSetup\color{SwissAccent}#1\par}%
+    \vspace{1.0mm}%
+    {\usebeamerfont{swiss step title}\SwissAstroHeadingSetup\color{SwissInk}#2\par}%
+    \vspace{1.0mm}%
     {\usebeamerfont{swiss card body}\color{SwissMuted}#3\par}%
   \end{minipage}%
 }
@@ -86,9 +105,9 @@
 \NewDocumentCommand{\SwissAstroTimelineItem}{m m +m}{%
   \begin{minipage}[t]{\linewidth}
     \SwissAstroTextSetup
-    {\usebeamerfont{swiss timeline year}\color{SwissAccent}#1\par}%
-    \vspace{0.5mm}%
-    {\usebeamerfont{swiss step title}\color{SwissInk}#2\par}%
+    {\usebeamerfont{swiss timeline year}\SwissAstroHeadingSetup\color{SwissAccent}#1\par}%
+    \vspace{1.0mm}%
+    {\usebeamerfont{swiss step title}\SwissAstroHeadingSetup\color{SwissInk}#2\par}%
     \vspace{0.8mm}%
     {\usebeamerfont{swiss card body}\color{SwissMuted}#3\par}%
   \end{minipage}%
@@ -101,9 +120,9 @@
   \SwissAstroCalcSpan{#1}{\SwissAstroSpanA}%
   \SwissAstroCalcSpan{#2}{\SwissAstroSpanB}%
   \noindent
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#3\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#3\end{minipage}%
   \hspace{\SwissAstroGutter}%
-  \begin{minipage}[t]{\SwissAstroSpanB}\SwissAstroTextSetup#4\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanB}\vspace{0pt}\SwissAstroTextSetup#4\end{minipage}%
   \endgroup
 }
 
@@ -124,11 +143,11 @@
   \begingroup\SwissAstroGridInit
   \SwissAstroCalcSpan{4}{\SwissAstroSpanA}%
   \noindent
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#1\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#1\end{minipage}%
   \hspace{\SwissAstroGutter}%
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#2\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#2\end{minipage}%
   \hspace{\SwissAstroGutter}%
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#3\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#3\end{minipage}%
   \endgroup
 }
 
@@ -136,13 +155,13 @@
   \begingroup\SwissAstroGridInit
   \SwissAstroCalcSpan{3}{\SwissAstroSpanA}%
   \noindent
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#1\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#1\end{minipage}%
   \hspace{\SwissAstroGutter}%
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#2\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#2\end{minipage}%
   \hspace{\SwissAstroGutter}%
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#3\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#3\end{minipage}%
   \hspace{\SwissAstroGutter}%
-  \begin{minipage}[t]{\SwissAstroSpanA}\SwissAstroTextSetup#4\end{minipage}%
+  \begin{minipage}[t]{\SwissAstroSpanA}\vspace{0pt}\SwissAstroTextSetup#4\end{minipage}%
   \endgroup
 }
 
@@ -156,25 +175,56 @@
 
 % A restrained process component whose geometry matches the grid rather than
 % a generic flow-chart aesthetic.
+\NewDocumentCommand{\SwissAstroProcessItem}{m m +m}{%
+  \begin{minipage}[t]{\linewidth}
+    \vspace{0pt}\SwissAstroTextSetup
+    {\usebeamerfont{swiss step number}\SwissAstroHeadingSetup\color{SwissAccent}#1\par}%
+    \vspace{0.7mm}%
+    {\usebeamerfont{swiss process title}\SwissAstroHeadingSetup\color{SwissInk}#2\par}%
+    \vspace{0.7mm}%
+    {\usebeamerfont{swiss process body}\SwissAstroTextSetup\color{SwissMuted}#3\par}%
+  \end{minipage}%
+}
 \NewDocumentCommand{\SwissAstroProcessThree}{m +m m +m m +m}{%
   \SwissAstroThreeColumns{%
-    \SwissAstroOpenItem[01]{#1}{#2}%
+    \SwissAstroProcessItem{01}{#1}{#2}%
   }{%
-    \SwissAstroOpenItem[02]{#3}{#4}%
+    \SwissAstroProcessItem{02}{#3}{#4}%
   }{%
-    \SwissAstroOpenItem[03]{#5}{#6}%
+    \SwissAstroProcessItem{03}{#5}{#6}%
   }%
   \vspace{1.4mm}\par
   {\color{SwissRule}\rule{\linewidth}{0.55pt}}%
+}
+
+% Five-item series keeps the same number/title/body component across two rows.
+% This avoids the visual mismatch that occurs when items 04-05 are improvised
+% with a different large-number treatment.
+\NewDocumentCommand{\SwissAstroProcessFive}{m m m m m}{%
+  \SwissAstroThreeColumns{%
+    \SwissAstroProcessItem{01}#1%
+  }{%
+    \SwissAstroProcessItem{02}#2%
+  }{%
+    \SwissAstroProcessItem{03}#3%
+  }%
+  \vspace{1.2mm}\par
+  \SwissAstroThreeColumns{%
+    \SwissAstroProcessItem{04}#4%
+  }{%
+    \SwissAstroProcessItem{05}#5%
+  }{\mbox{}}%
+  \vspace{0.8mm}\par
 }
 
 % Image helpers --------------------------------------------------------------
 \NewDocumentCommand{\SwissAstroImageBlock}{O{0.45\textheight} m m m}{%
   \includegraphics[width=\linewidth,height=#1,keepaspectratio]{#2}%
   \par\vspace{1.0mm}%
-  {\SwissAstroTextSetup\usebeamerfont{swiss image caption}\color{SwissInk}#3\par}%
+  {\usebeamerfont{swiss image caption}\SwissAstroTextSetup\color{SwissInk}#3\par}%
   \if\relax\detokenize{#4}\relax\else
-    {\SwissAstroTextSetup\usebeamerfont{swiss micro}\color{SwissMuted}#4\par}%
+    \par\vspace{0.7mm}%
+    {\usebeamerfont{swiss micro}\SwissAstroTextSetup\color{SwissMuted}#4\par}%
   \fi
 }
 
@@ -210,7 +260,7 @@
 % Scientific figure: figure + caption/source + reading notes, also 8+4.
 \NewDocumentCommand{\SwissAstroScientificFigure}{m m m +m}{%
   \SwissAstroGridPair{8}{4}{%
-    \SwissAstroImageBlock[0.45\textheight]{#1}{#2}{#3}%
+    \SwissAstroImageBlock[0.355\textheight]{#1}{#2}{#3}%
   }{#4}%
 }
 
@@ -234,7 +284,7 @@
         {\usebeamerfont{swiss kicker}\MakeUppercase{#2}};
       \node[anchor=north west,text width=.53\paperwidth,align=left,text=SwissInk]
         at ([xshift=\SwissAstroMargin,yshift=14mm]current page.south west)
-        {\SwissAstroTextSetup\fontsize{23}{24}\selectfont\bfseries #3};
+        {\fontsize{23}{25}\selectfont\bfseries\SwissAstroHeadingSetup #3};
       \node[anchor=south east,text=SwissMuted]
         at ([xshift=-\SwissAstroMargin,yshift=4mm]current page.south east)
         {\usebeamerfont{swiss micro}#4};
@@ -246,18 +296,18 @@
 % Comparison and data helpers ------------------------------------------------
 \NewDocumentCommand{\SwissAstroCompare}{m +m m +m}{%
   \SwissAstroGridPair{6}{6}{%
-    \SwissAstroTag{#1}\vspace{1.6mm}#2
+    \SwissAstroTag{#1}\par\vspace{1.8mm}#2\par
   }{%
-    \SwissAstroTag{#3}\vspace{1.6mm}#4
+    \SwissAstroTag{#3}\par\vspace{1.8mm}#4\par
   }%
 }
 
 \NewDocumentCommand{\SwissAstroMetric}{m m m}{%
   \begin{minipage}[t]{\linewidth}
     \SwissAstroTextSetup
-    {\usebeamerfont{swiss metric value}\color{SwissInk}#1\par}%
-    {\usebeamerfont{swiss metric unit}\color{SwissAccent}#2\par}%
-    \vspace{0.5mm}%
+    {\usebeamerfont{swiss metric value}\SwissAstroHeadingSetup\color{SwissInk}#1\par}%
+    {\usebeamerfont{swiss metric unit}\SwissAstroHeadingSetup\color{SwissAccent}#2\par}%
+    \vspace{1.0mm}%
     {\usebeamerfont{swiss stat label}\color{SwissMuted}\MakeUppercase{#3}\par}%
   \end{minipage}%
 }
@@ -275,7 +325,7 @@
     \vfill
     \SwissAstroTag{#1}
     \vspace{5mm}
-    {\SwissAstroTextSetup\fontsize{28}{31}\selectfont\bfseries\color{SwissWhite}#2\par}
+    {\fontsize{28}{31}\selectfont\bfseries\SwissAstroHeadingSetup\color{SwissWhite}#2\par}
     \vspace{6mm}
     {\color{SwissRule}\rule{0.45\linewidth}{0.7pt}}\par
     \vspace{2.5mm}
@@ -296,7 +346,7 @@
       \node[anchor=west] at ([xshift=\SwissAstroMargin,yshift=13mm]current page.west){\SwissAstroMark[SwissAccent]};
       \node[anchor=west,text width=.72\paperwidth,align=left,text=SwissInk]
         at ([xshift=\SwissAstroMargin,yshift=-2mm]current page.west)
-        {\SwissAstroTextSetup\fontsize{34}{35}\selectfont\bfseries #1};
+        {\fontsize{32}{34}\selectfont\bfseries\SwissAstroHeadingSetup #1};
       \node[anchor=south west,text=SwissMuted,text width=.70\paperwidth,align=left]
         at ([xshift=\SwissAstroMargin,yshift=8mm]current page.south west)
         {\SwissAstroTextSetup\small #2};

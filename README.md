@@ -1,39 +1,60 @@
 # Conférence — Programmes, défis et récompenses en astronomie amateur
 
-Présentation Beamer autonome bâtie avec le thème **SwissAstro 0.4.0**.
+Présentation Beamer autonome utilisant **SwissAstro 0.4.1** : 47 diapositives, activités et annexes incluses.
 
 ## Fichiers principaux
 
-- `presentation.tex` — présentation de ~2 h;
+- `presentation.tex` — source modifiable de la conférence;
 - `presentation.pdf` — PDF prêt à projeter;
+- `build.ps1` — compilation locale depuis PowerShell;
 - `fiche-participant.pdf` — fiche imprimable pour les activités;
-- `GUIDE_ANIMATEUR.md` — déroulement, design pédagogique et corrigés;
+- `GUIDE_ANIMATEUR.md` — déroulement et corrigés;
 - `SOURCES.md` — sources vérifiées au 10 septembre 2026;
-- fichiers `*.sty` et `assets/` — copie locale du thème SwissAstro 0.4.0.
+- six fichiers `*.sty` — copie autonome du gabarit;
+- `THEME.md` — version, provenance et adaptations de mise en page.
 
-## Évolutions de cette version
+## Migration vers SwissAstro 0.4.1
 
-La présentation a été migrée vers SwissAstro 0.4.0 et exploite davantage la grille de 12 colonnes, les compositions ouvertes (`SwissAstroOpenThree`, `SwissAstroOpenFour`) et le composant de processus (`SwissAstroProcessThree`). La police est laissée au thème afin d'utiliser correctement TeX Gyre Heros.
+La couverture utilise la variante pour titre long et la barre de progression est réactivée grâce au correctif officiel. Les cinq critères utilisent `SwissAstroProcessFive`; leur conclusion occupe une diapositive distincte. Les titres et les dispositions denses ont été adaptés pour préserver la zone du pied de page. La présentation passe de 46 à 47 diapositives, sans nouvelle activité.
 
-La barre de progression est désactivée au moyen de l'option officielle `noprogress`. Sur un diaporama long, la formule de progression de SwissAstro 0.4.0 provoque un dépassement de dimension TeX autour de la 35e diapositive. Le reste du thème 0.4.0 est utilisé sans modification.
+Les six fichiers du gabarit sont identiques à ceux du dépôt amont. Les adaptations propres à la conférence sont regroupées dans `presentation.tex` et décrites dans `THEME.md`.
 
-## Ouvrir dans TeXstudio
+## Compiler dans PowerShell
 
-1. Ouvrir `presentation.tex` dans TeXstudio.
-2. Choisir **PdfLaTeX** comme compilateur.
-3. Compiler deux fois.
+Prérequis : TeX Live ou MiKTeX avec Beamer, les paquets du thème, `babel-french`, `booktabs`, `tabularx` et `anyfontsize`. Le dossier des exécutables TeX doit être dans le `PATH`.
 
-Commande équivalente :
+Depuis ce dossier :
 
-```bash
-pdflatex presentation.tex
-pdflatex presentation.tex
+```powershell
+.\build.ps1
 ```
 
-## Durée pédagogique
+Si la politique PowerShell bloque uniquement l'exécution du script téléchargé :
 
-Le déroulement est calibré pour **environ 2 heures**, incluant une pause et trois activités pédagogiques. Les annexes ne font pas partie du temps principal.
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
+```
 
-## Mise à jour des faits
+Cette option ne modifie pas la politique permanente de PowerShell. Les fichiers intermédiaires restent dans `build/`, ignoré par Git. Le PDF à la racine est remplacé seulement après une compilation réussie sans débordement ni caractère manquant. Le script effectue trois passes pour stabiliser les positions et renvois.
 
-La présentation conserve les sources et vérifications de la version précédente. Les règles de programmes et dates de concours pouvant changer, consulter `SOURCES.md` avant une nouvelle prestation.
+Dans TeXstudio, ouvrir `presentation.tex`, choisir **PdfLaTeX**, puis compiler trois fois après un nettoyage des fichiers auxiliaires.
+
+## Reprendre le travail Git
+
+La migration est préparée dans la branche `codex/swissastro-0.4.1` d'un clone local ordinaire. Aucun sous-module ni espace de travail temporaire Git n'est nécessaire.
+
+```powershell
+git status
+git diff
+# Après de nouvelles modifications :
+git add presentation.tex presentation.pdf README.md THEME.md build.ps1 .gitignore *.sty
+git commit -m "Adapter la presentation au gabarit SwissAstro 0.4.1"
+# Pour envoyer la branche sur GitHub :
+git push -u origin codex/swissastro-0.4.1
+```
+
+Si le commit est déjà présent et que le dossier est propre, seule la commande `git push` est nécessaire pour publier la branche.
+
+## Durée et contenu
+
+Le déroulement pédagogique, la fiche participant et les sources existantes sont conservés. Consulter le guide pour le minutage détaillé et `SOURCES.md` avant une nouvelle prestation : la migration du gabarit ne constitue pas une nouvelle vérification des règles et dates des programmes.
