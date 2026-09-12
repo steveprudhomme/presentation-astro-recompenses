@@ -5,7 +5,7 @@
 - Révision copiée : `eec3db7fc6bf6d7097083e45cad0752e91a30323`
 - Licence : GNU GPL v3 ou ultérieure, voir `LICENSE`.
 
-Les six fichiers `.sty` sont copiés à l'identique. L'image `assets/demo-space.png` déjà présente est conservée. La présentation se compile sans accéder au dépôt du gabarit.
+Les six fichiers `.sty` sont copiés à l'identique. L'image `assets/demo-space.png` déjà présente est conservée dans les fichiers, mais la couverture utilise maintenant une photographie de M42. Les dix photographies de la version 1.3, leurs sources et leurs licences sont documentées dans `IMAGES.md`. La présentation se compile sans accéder au dépôt du gabarit.
 
 ## Adaptations de la conférence
 

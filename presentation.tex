@@ -20,11 +20,11 @@
 \subtitle{Du Québec à la scène internationale — choisir une quête et préparer ses premières étapes}
 \author[Steve Prud'Homme]{Steve Prud'Homme}
 \institute{Conférence d'astronomie amateur}
-\date{Version 1.2 / SwissAstro v0.4.1 / septembre 2026}
+\date{Version 1.3 / SwissAstro v0.4.1 / septembre 2026}
 \SwissAstroLongTitle
 \SwissAstroKicker{ASTRONOMIE AMATEUR / OBSERVATION / PROGRESSION}
 \SwissAstroSeries{STEVE PRUD'HOMME}
-\SwissAstroTitleImage{assets/demo-space.png}
+\SwissAstroTitleImage{assets/photos/m42.jpg}
 
 % RaggedRight remet leftskip à zéro dans les boîtes Beamer du thème 0.4.1.
 % Préserver leur retrait sans modifier les six fichiers du gabarit amont.
@@ -85,6 +85,24 @@
   \end{beamercolorbox}
 }
 
+% Images intégrées sans recadrage; crédits cliquables près des photographies.
+\input{credits-images.tex}
+\newcommand{\PhotoCredit}[1]{\csname PhotoCredit#1\endcsname}
+\newcommand{\Photo}[3][38mm]{%
+  \includegraphics[width=\linewidth,height=#1,keepaspectratio]{assets/photos/#2.jpg}\par
+  \vspace{0.6mm}{\usebeamerfont{swiss image caption}\SwissAstroTextSetup #3\par}
+}
+\newcommand{\PhotoSource}[1]{%
+  \par\vspace{0.7mm}{\usebeamerfont{swiss micro}\SwissAstroTextSetup\color{SwissMuted}\PhotoCredit{#1}\par}
+}
+\addtobeamertemplate{title page}{}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north east,text width=50mm,inner sep=0pt,align=left,text=SwissMuted]
+      at ([xshift=-8mm,yshift=12.5mm]current page.south east)
+      {\fontsize{6.5}{7.5}\selectfont M42 / \PhotoCredit{m42}};
+  \end{tikzpicture}
+}
+
 \begin{document}
 
 % 00:00-00:03
@@ -126,22 +144,18 @@
 
 % 00:11-00:15
 \begin{frame}{Observer avec intention}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.43\textwidth}
-      \SwissAstroTag{SANS CADRE}
-      \vspace{2mm}
-      {\fontsize{18}{20}\selectfont\bfseries « Qu'est-ce que je regarde ce soir? »}\par
-      \vspace{3mm}
-      {\small\color{SwissMuted}On revient facilement aux mêmes cibles, sans trace claire de sa progression.}
-    \column{0.49\textwidth}
-      \SwissAstroTag{AVEC UN PROGRAMME}
-      \vspace{2mm}
-      {\fontsize{18}{20}\selectfont\bfseries Objectif + méthode + journal + validation}\par
-      \vspace{3mm}
-      {\small\color{SwissMuted}La liste devient un parcours d'apprentissage plutôt qu'une simple collection de coches.}
-  \end{columns}
-  \vspace{2mm}
-  \SwissAstroTakeaway{La récompense est visible; la compétence acquise est la vraie valeur du parcours.}
+\SwissAstroGridPair{6}{6}{
+  \SwissAstroTag{SANS CADRE}
+  {\small « Qu'est-ce que je regarde ce soir? »\par
+  On revient aux mêmes cibles, sans trace de sa progression.}\par\vspace{2mm}
+  \SwissAstroTag{AVEC UN PROGRAMME}
+  {\small\bfseries Objectif + méthode + journal + validation}\par
+  {\small La liste devient un parcours d'apprentissage, au-delà des cases cochées.}
+}{
+  \Photo[32mm]{starparty}{Observer ensemble / université Ben-Gourion, Israël}
+  \PhotoSource{starparty}
+}
+\SwissAstroTakeaway{La récompense est visible; la compétence acquise est la vraie valeur du parcours.}
 \end{frame}
 
 % 00:15-00:19
@@ -228,33 +242,27 @@
 
 % 00:35-00:38
 \begin{frame}{Trois programmes pour commencer}
-\framesubtitle{Le bon début n'est pas forcément le programme le plus prestigieux.}
-  \SwissAstroOpenThree
-    {Constellations}{Développer le repérage du ciel sans dépendre d'un gros instrument.}
-    {Lune}{Observer souvent, depuis la ville, et apprendre à décrire des détails.}
-    {Messier}{Passer progressivement au ciel profond avec une liste classique et motivante.}
-  \vspace{3mm}
-  \SwissAstroTakeaway{Choisissez d'abord un programme compatible avec votre ciel, votre temps et votre équipement réel.}
+\SwissAstroGridPair{4}{8}{
+  \Photo[34mm]{moon}{La Lune / vue depuis la Terre}
+  \PhotoSource{moon}
+}{
+  \SwissAstroOpenItem{Constellations}{Se repérer sans dépendre d'un gros instrument.}\par\vspace{1.5mm}
+  \SwissAstroOpenItem{Lune}{Observer souvent, même en ville, et décrire les détails.}\par\vspace{1.5mm}
+  \SwissAstroOpenItem{Messier}{Aborder le ciel profond avec une liste classique et motivante.}
+  \par\vspace{2mm}{\small\bfseries Le bon début n'est pas le plus prestigieux : choisissez selon votre ciel, votre temps et votre équipement.}
+}
 \end{frame}
 
 % 00:38-00:41
-\begin{frame}{La FAAQ reconnaît aussi les pratiques modernes}
-\framesubtitle{Le cadre d'apprentissage peut intégrer les télescopes intelligents.}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.44\textwidth}
-      \SwissAstroTag{NIVEAU DÉBUTANT}
-      \vspace{2mm}
-      {\fontsize{19}{21}\selectfont\bfseries Seestar, Vespera, eVscope...}\par
-      \vspace{2mm}
-      {\small Certains programmes autorisent ces instruments au niveau débutant.}
-    \column{0.48\textwidth}
-      \SwissAstroTag{ASTROPHOTOGRAPHIE}
-      \vspace{2mm}
-      {\fontsize{19}{21}\selectfont\bfseries Planifier + acquérir + traiter + présenter}\par
-      \vspace{2mm}
-      {\small La compétence évaluée est un processus, pas seulement une belle image finale.}
-  \end{columns}
-  \MicroSource{FAAQ — Les programmes d'observation et programme Astrophotographie, consultés en septembre 2026.}
+\begin{frame}{FAAQ — les pratiques modernes}
+\SwissAstroGridPair{6}{6}{
+  \Photo[35mm]{seestar}{Seestar S50 / exemple de télescope intelligent}
+  \PhotoSource{seestar}
+}{
+  \SwissAstroOpenItem{Niveau débutant}{Certains programmes autorisent les télescopes intelligents : Seestar, Vespera, eVscope...}\par\vspace{3mm}
+  \SwissAstroOpenItem{Astrophotographie}{Planifier, acquérir, traiter et présenter : la compétence évaluée est un processus, pas seulement la belle image finale.}
+}
+\MicroSource{FAAQ — Les programmes d'observation et programme Astrophotographie, consultés en septembre 2026.}
 \end{frame}
 
 % 00:41-00:45
@@ -269,22 +277,21 @@
 
 % 00:45-00:48
 \begin{frame}{CAFTA — fabriquer, rechercher, imager}
-\framesubtitle{Exemple québécois où l'excellence technique devient une voie de reconnaissance.}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.33\textwidth}
-      \SwissAstroBigNumber{\SwissAstroOrdinal{43}{e}}{CAFTA 2026}
-      \vspace{2mm}
-      {\small 17 octobre 2026 / Dorval}
-    \column{0.59\textwidth}
-      \SwissAstroLead{Catégories annoncées}
-      \begin{itemize}
-        \item Finesse du travail
-        \item Recherche et technologie
-        \item Imagerie avancée
-        \item Prix Fred-Clarke
-      \end{itemize}
-  \end{columns}
+\SwissAstroGridPair{7}{5}{
+  \SwissAstroLead{\SwissAstroOrdinal{43}{e} CAFTA / 2026}
+  {\small 17 octobre 2026 / Dorval}\par\vspace{2mm}
+  {\small\bfseries Catégories annoncées}
+  \begin{itemize}\small
+    \item Finesse du travail
+    \item Recherche et technologie
+    \item Imagerie avancée
+    \item Prix Fred-Clarke
+  \end{itemize}
   \MicroSource{FAAQ — CAFTA 2026, page officielle de l'événement.}
+}{
+  \Photo[37mm]{dobsonian}{Tube d'un Dobson artisanal / illustration technique, hors CAFTA}
+  \PhotoSource{dobsonian}
+}
 \end{frame}
 
 \begin{frame}{Vérification express — Québec}
@@ -340,28 +347,28 @@
 
 % 00:56-01:00
 \begin{frame}{SRAC — choisir une spécialité}
-  \SwissAstroOpenFour
-    {Messier}{110 objets; classique du ciel profond.}
-    {Finest NGC}{110 objets; étape plus exigeante en ciel profond.}
-    {I. Williamson}{Parcours lunaire beaucoup plus détaillé.}
-    {Double Stars}{110 systèmes doubles ou multiples.}
-  \vspace{3mm}
-  \SwissAstroTakeaway{Le choix intermédiaire doit suivre ce que vous aimez réellement observer — pas une hiérarchie sociale des instruments.}
-  \MicroSource{RASC — Visual Observing Programs, 2026.}
+\SwissAstroGridPair{7}{5}{
+  \SwissAstroOpenItem{Messier et Finest NGC}{110 objets dans chaque parcours; Finest NGC propose un ciel profond plus exigeant.}\par\vspace{2mm}
+  \SwissAstroOpenItem{Isabel Williamson Lunar}{Un parcours lunaire beaucoup plus détaillé.}\par\vspace{2mm}
+  \SwissAstroOpenItem{Double Stars}{110 systèmes doubles ou multiples.}
+}{
+  \Photo[32mm]{m13}{M13 / amas globulaire, image Hubble}
+}
+\par\vspace{1mm}{\small\bfseries Choisir selon ce que vous aimez observer, pas selon le prestige de l'instrument.}
+\PhotoSource{m13}
+\MicroSource{RASC — Visual Observing Programs, 2026.}
 \end{frame}
 
 % 01:00-01:03
-\begin{frame}{Deux parcours poussent le ciel profond jusqu'au niveau avancé}
-  \SwissAstroCompare{DEEP-SKY GEMS}{
-    \SwissAstroBigNumber{154}{objets}
-    \vspace{2mm}
-    {\small Sélection de joyaux du ciel profond; certificat.}
-  }{DEEP-SKY CHALLENGE}{
-    \SwissAstroBigNumber{45}{objets difficiles}
-    \vspace{2mm}
-    {\small Programme conçu pour des observations nettement plus exigeantes; certificat.}
-  }
-  \MicroSource{RASC — Visual Observing Programs; document de synthèse fourni.}
+\begin{frame}{SRAC — deux parcours avancés}
+\SwissAstroGridPair{6}{6}{
+  \Photo[34mm]{m51}{M51 / image Hubble, détails non visibles à l'oculaire}
+}{
+  \SwissAstroOpenItem{Deep-Sky Gems}{154 objets : une sélection de joyaux du ciel profond; certificat.}\par\vspace{4mm}
+  \SwissAstroOpenItem{Deep-Sky Challenge}{45 objets difficiles : un parcours d'observation nettement plus exigeant; certificat.}
+}
+\PhotoSource{m51}
+\MicroSource{RASC — Visual Observing Programs; document de synthèse fourni.}
 \end{frame}
 
 % 01:03-01:07
@@ -425,13 +432,17 @@
 \end{frame}
 
 \begin{SwissAstroDarkFrame}
-  \vfill
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[inner sep=0pt] at (current page.center)
+      {\includegraphics[width=\paperwidth]{assets/photos/milkyway.jpg}};
+  \end{tikzpicture}
   \SwissAstroTag{PAUSE / 10 MINUTES}
-  \vspace{7mm}
-  {\fontsize{30}{33}\selectfont\bfseries\color{SwissWhite}Revenez avec le nom d'un programme que vous pourriez réellement commencer.}\par
-  \vspace{6mm}
-  {\small\color{SwissRule}À la reprise : États-Unis, science citoyenne, occultations et astrophotographie internationale.}
+  \vspace{3mm}
+  {\fontsize{20}{22}\selectfont\bfseries\color{SwissWhite}Revenez avec le nom d'un programme que vous pourriez réellement commencer.}\par
   \vfill
+  {\small\color{SwissWhite}À la reprise : États-Unis, science citoyenne, occultations et astrophotographie internationale.}\par
+  \vspace{2mm}
+  {\usebeamerfont{swiss micro}\color{SwissWhite}\hypersetup{urlcolor=SwissWhite}Panorama de la Voie lactée / \PhotoCredit{milkyway}\par}
 \end{SwissAstroDarkFrame}
 
 \section{International — spécialiser, contribuer, créer}
@@ -486,24 +497,20 @@
 
 % 01:41-01:45
 \begin{frame}{AAVSO — contribuer à la recherche}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.32\textwidth}
-      \SwissAstroTag{SCIENCE CITOYENNE}
-      \vspace{2mm}
-      \SwissAstroBigNumber{1}{code observateur}
-      \vspace{2mm}
-      {\small Créer un compte, demander un code et commencer avec des cibles adaptées.}
-    \column{0.60\textwidth}
-      \SwissAstroLead{Boucle d'apprentissage}
-      \begin{enumerate}
-        \item choisir une étoile variable accessible;
-        \item estimer ou mesurer sa magnitude;
-        \item documenter l'observation;
-        \item soumettre des données utilisables;
-        \item améliorer sa méthode avec la communauté et le mentorat.
-      \end{enumerate}
-  \end{columns}
-  \MicroSource{AAVSO — Honors and Awards; outils pour observateurs et inscription, consultés en 2026.}
+\SwissAstroGridPair{7}{5}{
+  {\small\bfseries Créer un compte, demander un code observateur.}\par\vspace{2mm}
+  \begin{enumerate}\small
+    \item Choisir une étoile variable accessible.
+    \item Estimer ou mesurer sa magnitude.
+    \item Documenter l'observation.
+    \item Soumettre des données utilisables.
+    \item Améliorer sa méthode avec la communauté et le mentorat.
+  \end{enumerate}
+}{
+  \Photo[33mm]{rs-puppis}{RS Puppis / exemple d'étoile variable, image Hubble}
+}
+\PhotoSource{rs-puppis}
+\MicroSource{AAVSO — Honors and Awards; outils pour observateurs et inscription, consultés en 2026.}
 \end{frame}
 
 % 01:45-01:49
@@ -530,19 +537,15 @@
 
 % 01:49-01:53
 \begin{frame}{Les concours d'astrophotographie}
-  \SwissAstroTwoColumns[0.44][0.48]{
-    \SwissAstroTag{FRANCOPHONIE}
-    \vspace{2mm}
-    \SwissAstroLead{Les Étoiles de l'Astronomie — AFA}
-    {\small Plusieurs catégories sont explicitement ouvertes aux photographes résidant dans la province du Québec.}
-  }{
-    \SwissAstroTag{MONDE}
-    \vspace{2mm}
-    \SwissAstroLead{ZWO Astronomy Photographer of the Year}
-    {\small Concours mondial du Royal Observatory Greenwich; jusqu'à dix images par participant. L'édition 2026 est close; résultats en septembre.}
-  }
-  \vspace{2mm}
-  \MicroSource{Sources : AFA — Les Étoiles de l'Astronomie; Royal Museums Greenwich — APY 18, 2026.}
+\SwissAstroGridPair{4}{8}{
+  \Photo[39mm]{orion-vlt}{Orion au-dessus du VLT / Chili}
+  \PhotoSource{orion-vlt}
+}{
+  \SwissAstroOpenItem{Les Étoiles de l'Astronomie — AFA}{Plusieurs catégories sont ouvertes aux photographes résidant au Québec.}\par\vspace{3mm}
+  \SwissAstroOpenItem{ZWO Astronomy Photographer of the Year}{Concours mondial du Royal Observatory Greenwich; jusqu'à dix images. L'édition 2026 est close; résultats en septembre.}\par\vspace{2mm}
+  {\scriptsize\color{SwissMuted}À gauche : exemple de paysage nocturne, sans lien avec les palmarès de ces concours.}
+}
+\MicroSource{AFA — Les Étoiles de l'Astronomie; Royal Museums Greenwich — APY 18, 2026.}
 \end{frame}
 
 % 01:53-01:56
