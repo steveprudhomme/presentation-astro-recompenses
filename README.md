@@ -12,6 +12,15 @@ Présentation Beamer autonome utilisant **SwissAstro 0.4.1** : 47 diapositives, 
 - `SOURCES.md` — sources vérifiées au 10 septembre 2026;
 - six fichiers `*.sty` — copie autonome du gabarit;
 - `THEME.md` — version, provenance et adaptations de mise en page.
+- `assets/photos/` — dix photographies Creative Commons ou du domaine public;
+- `IMAGES.md` — crédits, sources, licences et conditions de réutilisation;
+- `credits-images.tex` — crédits cliquables affichés près des photographies.
+
+## Version illustrée 1.3
+
+Dix photographies réelles illustrent la couverture, l'observation en groupe, la Lune, le Seestar, la fabrication d'un Dobson, les objets du ciel profond, les étoiles variables et les paysages nocturnes. Le panorama de la Voie lactée sert de fond à la pause. Le total reste de 47 diapositives.
+
+Les crédits complets et les licences sont visibles et cliquables dans le PDF. Les fichiers sont inclus localement : aucune connexion n'est nécessaire pour compiler. Les images conservent leur licence propre, détaillée dans `IMAGES.md`. Aucune image générée par IA n'est utilisée.
 
 ## Migration vers SwissAstro 0.4.1
 
@@ -47,7 +56,7 @@ La migration est préparée dans la branche `codex/swissastro-0.4.1` d'un clone 
 git status
 git diff
 # Après de nouvelles modifications :
-git add presentation.tex presentation.pdf README.md THEME.md build.ps1 .gitignore *.sty
+git add presentation.tex presentation.pdf README.md THEME.md IMAGES.md credits-images.tex assets/photos build.ps1 .gitignore *.sty
 git commit -m "Adapter la presentation au gabarit SwissAstro 0.4.1"
 # Pour envoyer la branche sur GitHub :
 git push -u origin codex/swissastro-0.4.1
