@@ -1,5 +1,5 @@
 \documentclass[aspectratio=169]{beamer}
-\usetheme[noprogress]{SwissAstro}
+\usetheme{SwissAstro}
 
 \usepackage[french]{babel}
 \usepackage[T1]{fontenc}
@@ -7,6 +7,7 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{array}
+\usepackage{anyfontsize}
 \usepackage{tikz}
 \usepackage{hyperref}
 \usepackage{xcolor}
@@ -15,19 +16,52 @@
 \hypersetup{colorlinks=true,urlcolor=SwissAccent,linkcolor=SwissInk}
 \graphicspath{{assets/}}
 
-\title[Programmes, défis et récompenses]{Programmes, défis et récompenses\\en astronomie amateur}
+\title[Programmes, défis et récompenses]{Programmes, défis et récompenses en astronomie amateur}
 \subtitle{Du Québec à la scène internationale — choisir une quête et préparer ses premières étapes}
 \author[Steve Prud'Homme]{Steve Prud'Homme}
 \institute{Conférence d'astronomie amateur}
-\date{Version 1.1 / SwissAstro v0.4.0 / septembre 2026}
+\date{Version 1.2 / SwissAstro v0.4.1 / septembre 2026}
+\SwissAstroLongTitle
 \SwissAstroKicker{ASTRONOMIE AMATEUR / OBSERVATION / PROGRESSION}
 \SwissAstroSeries{STEVE PRUD'HOMME}
 \SwissAstroTitleImage{assets/demo-space.png}
 
+% RaggedRight remet leftskip à zéro dans les boîtes Beamer du thème 0.4.1.
+% Préserver leur retrait sans modifier les six fichiers du gabarit amont.
+\let\ConferenceTextSetup\SwissAstroTextSetup
+\newlength{\ConferenceLeftSkip}
+\renewcommand{\SwissAstroTextSetup}{%
+  \setlength{\ConferenceLeftSkip}{\leftskip}%
+  \ConferenceTextSetup
+  \setlength{\leftskip}{\ConferenceLeftSkip}%
+}
+% Une minipage mesure explicitement l'en-tête et protège sa marge supérieure.
+% Les polices, couleurs, espacements et le filet restent ceux de SwissAstro.
+\makeatletter
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{minipage}{\textwidth}
+    \vspace*{2mm}
+    {\usebeamerfont{swiss kicker}\SwissAstroHeadingSetup\color{SwissMuted}%
+      \ifdefempty{\insertsectionhead}{\MakeUppercase{\swissastro@series}}%
+        {\MakeUppercase{\insertsectionhead}}\par}
+    \vspace{1.1mm}
+    {\usebeamerfont{frametitle}\SwissAstroHeadingSetup\color{SwissInk}\insertframetitle\par}
+    \ifx\insertframesubtitle\@empty\else
+      \vspace{1.1mm}
+      {\usebeamerfont{framesubtitle}\SwissAstroTextSetup\color{SwissMuted}\insertframesubtitle\par}
+    \fi
+    \vspace{1.8mm}
+    {\color{SwissInk}\rule{\linewidth}{0.65pt}\par}
+    \vspace{0.9mm}
+  \end{minipage}%
+}
+\makeatother
+
 % ---------------------------------------------------------------------------
 % Petits composants propres à cette conférence
 % ---------------------------------------------------------------------------
-\newcommand{\MicroSource}[1]{\vspace{1mm}{\tiny\color{SwissMuted}#1\par}}
+\newcommand{\MicroSource}[1]{\par\vspace{1mm}{\tiny\color{SwissMuted}#1\par}}
 \newcommand{\MiniLabel}[1]{\textcolor{SwissAccent}{\bfseries\scriptsize\MakeUppercase{#1}}}
 
 \newcommand{\FamilyCard}[3]{%
@@ -59,8 +93,7 @@
 \end{frame}
 
 % 00:03-00:07
-\begin{frame}{À la fin, vous aurez choisi une prochaine quête}
-\framesubtitle{Le niveau visé va de l'identification à une première mise en application.}
+\begin{frame}{Objectif : choisir sa prochaine quête}
   \SwissAstroProcessThree
     {Identifier}{Reconnaître les principales familles de programmes, défis et récompenses.}
     {Associer}{Relier un programme à un intérêt, un équipement et un niveau d'expérience.}
@@ -92,7 +125,7 @@
 \section{Donner une direction à ses nuits}
 
 % 00:11-00:15
-\begin{frame}{Un programme transforme « regarder » en « observer avec intention »}
+\begin{frame}{Observer avec intention}
   \begin{columns}[T,onlytextwidth]
     \column{0.43\textwidth}
       \SwissAstroTag{SANS CADRE}
@@ -112,8 +145,7 @@
 \end{frame}
 
 % 00:15-00:19
-\begin{frame}{Il existe quatre grandes familles de défis}
-\framesubtitle{Cette carte servira de repère pendant toute la conférence.}
+\begin{frame}{Quatre familles de défis}
   \SwissAstroFourColumns{
     \FamilyCard{01}{Certification par liste}{Observer une liste prescrite et documenter ses observations.}
   }{
@@ -127,23 +159,23 @@
 \end{frame}
 
 % 00:19-00:25
-\begin{frame}{Activité 1 — Classer avant de mémoriser}
+\begin{frame}{Activité 1 — Classer les programmes}
 \framesubtitle{Classez A à F dans les quatre familles — 3 minutes, puis correction.}
   \begin{columns}[T,onlytextwidth]
     \column{0.47\textwidth}
       \MiniLabel{A — 110 objets Messier}\par
       {\small Observer, consigner, faire valider une liste.}\par\vspace{2.6mm}
       \MiniLabel{B — étoiles variables}\par
-      {\small Mesurer des magnitudes et soumettre les observations.}\par\vspace{2.6mm}
+      {\small Mesurer et soumettre des magnitudes.}\par\vspace{2.6mm}
       \MiniLabel{C — concours photo}\par
-      {\small Soumettre une image selon des critères annoncés.}
+      {\small Soumettre une image selon les critères.}
     \column{0.45\textwidth}
       \MiniLabel{D — défi mensuel EAA}\par
       {\small Nouvelles cibles proposées par une communauté.}\par\vspace{2.6mm}
       \MiniLabel{E — Trophée Méritas}\par
-      {\small Reconnaissance d'un engagement soutenu.}\par\vspace{2.6mm}
+      {\small Reconnaître un engagement soutenu.}\par\vspace{2.6mm}
       \MiniLabel{F — occultation d'astéroïde}\par
-      {\small Chronométrer un événement et transmettre la donnée.}
+      {\small Chronométrer et transmettre la donnée.}
   \end{columns}
 \end{frame}
 
@@ -163,8 +195,8 @@
 \section{Québec — une progression proche de chez nous}
 
 % 00:27-00:31
-\begin{frame}{La FAAQ propose maintenant 11 programmes d'observation}
-\framesubtitle{Mise à jour officielle vérifiée le 10 septembre 2026.}
+\begin{frame}{FAAQ — 11 programmes d'observation}
+\framesubtitle{Liste officielle vérifiée le 10 septembre 2026.}
   \begin{columns}[T,onlytextwidth]
     \column{0.30\textwidth}
       \SwissAstroBigNumber{11}{programmes}
@@ -177,7 +209,6 @@
         \column{0.48\textwidth}\small
           \textbf{Étoiles doubles}\\ Constellations\\ Caldwell\\ Messier\\ 50e anniversaire
       \end{columns}
-      \vspace{2mm}
       \SwissAstroTakeaway{Le paysage québécois est plus structuré aujourd'hui que ne le laissait entendre le document de départ.}
   \end{columns}
 \end{frame}
@@ -196,7 +227,7 @@
 \end{frame}
 
 % 00:35-00:38
-\begin{frame}{Trois portes d'entrée donnent rapidement une première victoire}
+\begin{frame}{Trois programmes pour commencer}
 \framesubtitle{Le bon début n'est pas forcément le programme le plus prestigieux.}
   \SwissAstroOpenThree
     {Constellations}{Développer le repérage du ciel sans dépendre d'un gros instrument.}
@@ -241,7 +272,7 @@
 \framesubtitle{Exemple québécois où l'excellence technique devient une voie de reconnaissance.}
   \begin{columns}[T,onlytextwidth]
     \column{0.33\textwidth}
-      \SwissAstroBigNumber{43e}{CAFTA 2026}
+      \SwissAstroBigNumber{\SwissAstroOrdinal{43}{e}}{CAFTA 2026}
       \vspace{2mm}
       {\small 17 octobre 2026 / Dorval}
     \column{0.59\textwidth}
@@ -292,7 +323,7 @@
 \end{frame}
 
 % 00:52-00:56
-\begin{frame}{Pour débuter, la SRAC réduit volontairement la barrière d'entrée}
+\begin{frame}{SRAC — deux programmes pour débuter}
   \SwissAstroTwoColumns[0.44][0.48]{
     \SwissAstroTag{EXPLORE THE UNIVERSE}
     \vspace{2mm}
@@ -308,7 +339,7 @@
 \end{frame}
 
 % 00:56-01:00
-\begin{frame}{Le niveau intermédiaire permet de choisir une spécialité}
+\begin{frame}{SRAC — choisir une spécialité}
   \SwissAstroOpenFour
     {Messier}{110 objets; classique du ciel profond.}
     {Finest NGC}{110 objets; étape plus exigeante en ciel profond.}
@@ -334,13 +365,13 @@
 \end{frame}
 
 % 01:03-01:07
-\begin{frame}{Le journal d'observation est la compétence transversale}
+\begin{frame}{Le journal d'observation}
 \framesubtitle{Tous les programmes certifiants visuels de la SRAC exigent un journal.}
   \begin{columns}[T,onlytextwidth]
     \column{0.32\textwidth}
       \SwissAstroBigNumber{01}{objet}
-      \vspace{2mm}\SwissAstroBigNumber{02}{conditions}
-      \vspace{2mm}\SwissAstroBigNumber{03}{description}
+      \SwissAstroBigNumber{02}{conditions}
+      \SwissAstroBigNumber{03}{description}
     \column{0.60\textwidth}
       \SwissAstroCard{Entrée minimale utile}{Date et heure / lieu / instrument / grossissement / conditions / objet / ce qui est réellement vu.}
       \vspace{2mm}
@@ -378,12 +409,11 @@
   }{
     \SwissAstroCard{Karim}{\textbf{Télescope 90 mm / aime les objets serrés}\par Veut développer sa finesse d'observation.\par\vspace{1mm}\textcolor{SwissAccent}{\bfseries Quel programme SRAC?}}
   }
-  \vspace{2mm}
   {\small\bfseries Cherchez l'adéquation objectif–instrument–difficulté, pas un « meilleur » programme absolu.}
 \end{frame}
 
 % 01:18-01:20
-\begin{frame}{Correction — trois bonnes portes d'entrée, pour trois raisons différentes}
+\begin{frame}{Correction — un programme par profil}
   \SwissAstroThreeColumns{
     \SwissAstroCard{Alex → Explore the Universe}{Accessible au novice et aux non-membres; œil nu, jumelles ou petit instrument.}
   }{
@@ -391,7 +421,6 @@
   }{
     \SwissAstroCard{Karim → Double Stars}{Programme spécialisé compatible avec un petit télescope; développe l'attention aux détails.}
   }
-  \vspace{4mm}
   \SwissAstroTakeaway{Associer correctement un programme à un profil est déjà une compétence d'\textbf{application}.}
 \end{frame}
 
@@ -416,7 +445,7 @@
 \end{frame}
 
 % 01:34-01:38
-\begin{frame}{Astronomical League : plus de 75 programmes d'observation}
+\begin{frame}{Astronomical League — 75+ programmes}
 \framesubtitle{Une organisation américaine, mais un catalogue de programmes à portée internationale.}
   \begin{columns}[T,onlytextwidth]
     \column{0.32\textwidth}
@@ -434,7 +463,7 @@
 \end{frame}
 
 % 01:38-01:41
-\begin{frame}{Master Observer — une progression sur plusieurs années}
+\begin{frame}{Le parcours Master Observer}
 \framesubtitle{La récompense relie plusieurs programmes en un parcours à long terme.}
   \centering
   \begin{tikzpicture}[scale=.82,transform shape]
@@ -447,7 +476,7 @@
     \node[box] (g) at (11.2,0) {Gold};
     \node[box,fill=SwissAccent,text=white,draw=SwissAccent] (p) at (11.2,-1.5) {Platinum};
     \draw[arrow] (o)--(m); \draw[arrow] (m)--(a); \draw[arrow] (a)--(s); \draw[arrow] (s)--(g); \draw[arrow] (g)--(p);
-  \end{tikzpicture}
+  \end{tikzpicture}\par
   \vspace{3mm}
   {\small\color{SwissMuted}Branches complémentaires : Binocular Master Observer / Master Imager / For Your Eyes Only / Triple-Crown.}\par
   \vspace{3mm}
@@ -456,7 +485,7 @@
 \end{frame}
 
 % 01:41-01:45
-\begin{frame}{AAVSO — la réussite se mesure par la qualité de la contribution}
+\begin{frame}{AAVSO — contribuer à la recherche}
   \begin{columns}[T,onlytextwidth]
     \column{0.32\textwidth}
       \SwissAstroTag{SCIENCE CITOYENNE}
@@ -478,7 +507,7 @@
 \end{frame}
 
 % 01:45-01:49
-\begin{frame}{IOTA — transformer une occultation en donnée scientifique}
+\begin{frame}{IOTA — mesurer une occultation}
   \begin{columns}[T,onlytextwidth]
     \column{0.54\textwidth}
       \begin{tikzpicture}[scale=.82]
@@ -500,7 +529,7 @@
 \end{frame}
 
 % 01:49-01:53
-\begin{frame}{Astrophotographie — du Québec aux concours internationaux}
+\begin{frame}{Les concours d'astrophotographie}
   \SwissAstroTwoColumns[0.44][0.48]{
     \SwissAstroTag{FRANCOPHONIE}
     \vspace{2mm}
@@ -529,24 +558,22 @@
 \section{Choisir sa prochaine quête}
 
 % 01:56-02:00
-\begin{frame}{Le meilleur programme est celui que vous pouvez réellement commencer}
-\framesubtitle{Cinq filtres suffisent pour réduire rapidement le choix.}
-  \SwissAstroOpenThree
-    {01 — Motivation}{Qu'est-ce qui vous donne envie de sortir observer?}
-    {02 — Équipement}{Que pouvez-vous utiliser régulièrement, sans achat préalable?}
-    {03 — Ciel + temps}{Quel niveau de pollution lumineuse et quelle disponibilité réelle?}
-  \vspace{3mm}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.46\textwidth}\SwissAstroOpenItem[04]{Règles}{Méthode permise, journal, validation et admissibilité.}
-    \column{0.46\textwidth}\SwissAstroOpenItem[05]{Soutien}{Club, mentor ou communauté capable de vous accompagner.}
-  \end{columns}
-  \vspace{3mm}
+\begin{frame}{Cinq critères pour choisir son programme}
+  \SwissAstroProcessFive
+    {{Motivation}{Qu'est-ce qui vous donne envie d'observer?}}
+    {{Équipement}{Quel matériel utiliser régulièrement, sans achat?}}
+    {{Ciel + temps}{Pollution lumineuse et disponibilité réelle.}}
+    {{Règles}{Méthode, journal, validation et admissibilité.}}
+    {{Soutien}{Club, mentor ou communauté pour vous accompagner.}}
+\end{frame}
+
+\begin{frame}{Un programme à commencer dès ce mois-ci}
+  \SwissAstroLead{Le meilleur programme est celui que vous pouvez réellement commencer.}
   \SwissAstroTakeaway{Un programme « ambitieux » qui reste dans un signet n'enseigne rien. Un programme commencé dès ce mois-ci, oui.}
 \end{frame}
 
 % 02:00-02:03
-\begin{frame}{Arbre de décision — partez de votre intention}
-\framesubtitle{Trois branches simples suffisent pour trouver une première famille de programmes.}
+\begin{frame}{Choisir selon son intention}
   \SwissAstroThreeColumns{
     \SwissAstroTag{OBSERVER}
     \vspace{2mm}
@@ -572,16 +599,15 @@
 % 02:03-02:12
 \begin{frame}{Activité 3 — Mon prochain programme}
 \framesubtitle{8 à 9 minutes — un plan concret à commencer dans les 30 prochains jours.}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.46\textwidth}
+  \SwissAstroFourColumns{
       \SwissAstroNumberedCard{1}{Je choisis}{Nom du programme / organisation / niveau visé.}
-      \vspace{1.5mm}
+  }{
       \SwissAstroNumberedCard{2}{Je vérifie}{Admissibilité, équipement, méthode permise, journal et preuve demandée.}
-    \column{0.46\textwidth}
+  }{
       \SwissAstroNumberedCard{3}{Je commence}{Mes trois premières observations ou actions concrètes.}
-      \vspace{1.5mm}
+  }{
       \SwissAstroNumberedCard{4}{Je m'engage}{Une première date au calendrier + une personne ou un club pour m'aider.}
-  \end{columns}
+  }
 \end{frame}
 
 % 02:12-02:15
@@ -642,7 +668,7 @@
   {\scriptsize\color{SwissMuted}Toujours lire la page officielle du programme avant de commencer : règles, admissibilité, méthodes permises et formulaires peuvent évoluer.}
 \end{frame}
 
-\begin{frame}{SRAC — repère comparatif des huit programmes visuels}
+\begin{frame}{SRAC — les huit programmes visuels}
 \scriptsize
 \begin{tabularx}{\linewidth}{>{\bfseries}p{0.24\linewidth} p{0.14\linewidth} p{0.15\linewidth} X}
 \toprule
@@ -666,6 +692,7 @@ Deep-Sky Challenge & Avancé & 45 défis & plusieurs cibles difficiles \\
     {Système solaire}{Lune\\Soleil\\Système solaire\\Rayonnement}
     {Ciel profond / repérage}{Constellations\\Messier\\Caldwell\\Herschel\\Étoiles doubles}
     {Imagerie / spécial}{Astrophotographie\\50e anniversaire}
+  \par
   \vspace{2mm}
   {\small\bfseries La FAAQ indique quatre niveaux pour la plupart des programmes et une épinglette à chaque niveau réussi.}
 \end{frame}

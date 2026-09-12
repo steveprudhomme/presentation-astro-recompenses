@@ -1,10 +1,20 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerfontthemeSwissAstro}[2026/09/10 v0.4.0 SwissAstro font theme]
+\ProvidesPackage{beamerfontthemeSwissAstro}[2026/09/11 v0.4.1 SwissAstro font theme]
 
 \RequirePackage[T1]{fontenc}
 % TeX Gyre Heros keeps the project self-contained and provides a Helvetica-like
 % neo-grotesque voice without shipping commercial font files.
 \RequirePackage[scale=0.97]{tgheros}
+% Type 1 TeX Gyre Heros is intentionally kept for reproducibility. Normalize a
+% few common Unicode characters that are absent from its direct glyph map so
+% LuaLaTeX and pdfLaTeX documents can use ordinary French source text safely.
+\RequirePackage{newunicodechar}
+\newunicodechar{—}{---}
+\newunicodechar{–}{--}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{Œ}{\OE}
+\newunicodechar{œ}{\oe}
+
 
 \mode<presentation>
 \usefonttheme{professionalfonts}
@@ -13,28 +23,28 @@
 % v0.4.0 formalizes a projection-first type scale. Metadata stays compact but
 % no longer drops below the practical floor used by the previous theme.
 \setbeamerfont{normal text}{family=\sffamily,size=\fontsize{10.7}{13.4}}
-\setbeamerfont{title}{family=\sffamily,series=\bfseries,size=\fontsize{31}{32}}
-\setbeamerfont{subtitle}{family=\sffamily,series=\mdseries,size=\fontsize{10.8}{13.2}}
+\setbeamerfont{title}{family=\sffamily,series=\bfseries,size=\fontsize{30}{32.5}}
+\setbeamerfont{subtitle}{family=\sffamily,series=\mdseries,size=\fontsize{11}{13.6}}
 \setbeamerfont{author}{family=\sffamily,series=\bfseries,size=\fontsize{8.8}{10.2}}
 \setbeamerfont{date}{family=\sffamily,size=\fontsize{7.4}{8.8}}
-\setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\fontsize{19.5}{21.2}}
-\setbeamerfont{framesubtitle}{family=\sffamily,size=\fontsize{9.5}{11.3}}
-\setbeamerfont{section page}{family=\sffamily,series=\bfseries,size=\fontsize{34}{35}}
+\setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\fontsize{19}{21.4}}
+\setbeamerfont{framesubtitle}{family=\sffamily,size=\fontsize{9.8}{11.7}}
+\setbeamerfont{section page}{family=\sffamily,series=\bfseries,size=\fontsize{28}{30}}
 \setbeamerfont{section number}{family=\sffamily,series=\bfseries,size=\fontsize{46}{46}}
 \setbeamerfont{footline}{family=\sffamily,size=\fontsize{6.6}{7.7}}
 \setbeamerfont{block title}{family=\sffamily,series=\bfseries,size=\fontsize{10.2}{12}}
 \setbeamerfont{block body}{family=\sffamily,size=\fontsize{9.2}{11.2}}
-\setbeamerfont{swiss tag}{family=\sffamily,series=\bfseries,size=\fontsize{7.0}{8.0}}
+\setbeamerfont{swiss tag}{family=\sffamily,series=\bfseries,size=\fontsize{7.4}{8.6}}
 \setbeamerfont{swiss stat value}{family=\sffamily,series=\bfseries,size=\fontsize{21}{22}}
-\setbeamerfont{swiss stat label}{family=\sffamily,series=\bfseries,size=\fontsize{6.7}{7.8}}
+\setbeamerfont{swiss stat label}{family=\sffamily,series=\bfseries,size=\fontsize{7.2}{8.5}}
 \setbeamerfont{swiss big number}{family=\sffamily,series=\bfseries,size=\fontsize{30}{31}}
-\setbeamerfont{swiss quote}{family=\sffamily,series=\bfseries,size=\fontsize{17}{20}}
+\setbeamerfont{swiss quote}{family=\sffamily,series=\bfseries,size=\fontsize{16}{18.5}}
 \setbeamerfont{swiss quote source}{family=\sffamily,size=\fontsize{7.8}{9.2}}
-\setbeamerfont{swiss kicker}{family=\sffamily,series=\bfseries,size=\fontsize{6.7}{7.8}}
-\setbeamerfont{swiss micro}{family=\sffamily,size=\fontsize{6.5}{7.8}}
+\setbeamerfont{swiss kicker}{family=\sffamily,series=\bfseries,size=\fontsize{7.0}{8.2}}
+\setbeamerfont{swiss micro}{family=\sffamily,size=\fontsize{7.0}{8.4}}
 \setbeamerfont{swiss takeaway}{family=\sffamily,series=\bfseries,size=\fontsize{10.2}{12.1}}
 \setbeamerfont{swiss card title}{family=\sffamily,series=\bfseries,size=\fontsize{10.5}{12.2}}
-\setbeamerfont{swiss card body}{family=\sffamily,size=\fontsize{8.7}{10.6}}
+\setbeamerfont{swiss card body}{family=\sffamily,size=\fontsize{8.9}{10.9}}
 \setbeamerfont{swiss card number}{family=\sffamily,series=\bfseries,size=\fontsize{20}{20}}
 \setbeamerfont{swiss step number}{family=\sffamily,series=\bfseries,size=\fontsize{23}{23}}
 \setbeamerfont{swiss step title}{family=\sffamily,series=\bfseries,size=\fontsize{10}{12}}
@@ -43,8 +53,8 @@
 \setbeamerfont{swiss metric value}{family=\sffamily,series=\bfseries,size=\fontsize{27}{28}}
 \setbeamerfont{swiss metric unit}{family=\sffamily,series=\bfseries,size=\fontsize{8}{9}}
 \setbeamerfont{swiss open title}{family=\sffamily,series=\bfseries,size=\fontsize{10.4}{12.1}}
-\setbeamerfont{swiss open body}{family=\sffamily,size=\fontsize{8.8}{10.8}}
+\setbeamerfont{swiss open body}{family=\sffamily,size=\fontsize{9.0}{11.0}}
 \setbeamerfont{swiss process title}{family=\sffamily,series=\bfseries,size=\fontsize{9.6}{11.2}}
-\setbeamerfont{swiss process body}{family=\sffamily,size=\fontsize{8.4}{10.2}}
+\setbeamerfont{swiss process body}{family=\sffamily,size=\fontsize{8.9}{10.8}}
 
 \mode<all>

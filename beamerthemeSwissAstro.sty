@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerthemeSwissAstro}[2026/09/10 v0.4.0 Swiss-inspired astronomy Beamer theme]
+\ProvidesPackage{beamerthemeSwissAstro}[2026/09/11 v0.4.1 Swiss-inspired astronomy Beamer theme]
 
 \mode<presentation>
 
@@ -25,16 +25,41 @@
 % original SwissAstro deck while remaining practical on 16:9 Beamer pages.
 \newlength{\SwissAstroMargin}
 \newlength{\SwissAstroGutter}
+\newlength{\SwissAstroSpaceXS}
+\newlength{\SwissAstroSpaceS}
+\newlength{\SwissAstroSpaceM}
+\newlength{\SwissAstroSpaceL}
 \setlength{\SwissAstroMargin}{8mm}
 \setlength{\SwissAstroGutter}{2.8mm}
+\setlength{\SwissAstroSpaceXS}{0.8mm}
+\setlength{\SwissAstroSpaceS}{1.6mm}
+\setlength{\SwissAstroSpaceM}{2.8mm}
+\setlength{\SwissAstroSpaceL}{4.5mm}
 
 % Swiss-style text setting: flush left, ragged right and no visual hyphenation.
-% The emergency stretch is only a safety valve for very narrow components.
+% The emergency stretch is only a safety valve for narrow components.
 \newcommand{\SwissAstroTextSetup}{%
-  \RaggedRight\sloppy
+  \RaggedRight
   \hyphenpenalty=10000\exhyphenpenalty=10000%
+  \doublehyphendemerits=100000\finalhyphendemerits=100000%
+  \pretolerance=4000\tolerance=6000%
   \emergencystretch=1.5em%
 }
+
+% Headings receive an even stricter setting. Call this after selecting the
+% heading font so the current font's hyphenation character is disabled too.
+\newcommand{\SwissAstroHeadingSetup}{%
+  \SwissAstroTextSetup
+  \pretolerance=10000\tolerance=10000%
+  \emergencystretch=3em%
+  \hyphenchar\font=-1\relax%
+}
+
+% Centralized French typography helpers. Thin spaces are non-breaking so the
+% guillemets and ordinal suffixes remain attached to their content.
+\newcommand{\SwissAstroThinNBSP}{\nobreak\hspace{0.15em}}
+\newcommand{\SwissAstroFrenchQuote}[1]{\guillemotleft\SwissAstroThinNBSP#1\SwissAstroThinNBSP\guillemotright}
+\newcommand{\SwissAstroOrdinal}[2]{#1\textsuperscript{#2}}
 
 \usecolortheme{SwissAstro}
 \usefonttheme{SwissAstro}
@@ -71,7 +96,9 @@
   \par\noindent
   \begingroup
   \setlength{\fboxsep}{1.45mm}%
-  \colorbox{SwissAccent}{\color{SwissWhite}\usebeamerfont{swiss tag}\strut\MakeUppercase{#1}}%
+  \colorbox{SwissAccent}{%
+    \color{SwissWhite}\usebeamerfont{swiss tag}%
+    \raisebox{-0.12ex}{\strut\MakeUppercase{#1}}}%
   \endgroup
   \par
 }
@@ -80,7 +107,7 @@
   \begin{minipage}[t]{0.29\linewidth}
     \SwissAstroTextSetup
     {\usebeamerfont{swiss stat value}\color{SwissInk}#1\par}
-    \vspace{0.5mm}
+    \vspace{\SwissAstroSpaceS}
     {\usebeamerfont{swiss stat label}\color{SwissMuted}\MakeUppercase{#2}\par}
   \end{minipage}%
 }
@@ -90,16 +117,16 @@
   \begin{minipage}[t]{\linewidth}
     \SwissAstroTextSetup
     {\usebeamerfont{swiss big number}\color{SwissInk}#1\par}
-    \vspace{-0.5mm}
+    \vspace{1.2mm}
     {\usebeamerfont{swiss stat label}\color{SwissMuted}\MakeUppercase{#2}\par}
   \end{minipage}%
   \par
 }
 
 \newcommand{\SwissAstroQuote}[2]{%
-  \begin{beamercolorbox}[wd=\linewidth,sep=5mm,leftskip=0mm]{swiss quote}
+  \begin{beamercolorbox}[wd=\linewidth,sep=4mm,leftskip=0mm]{swiss quote}
     \SwissAstroTextSetup
-    {\usebeamerfont{swiss quote}\color{SwissInk}``#1''\par}
+    {\usebeamerfont{swiss quote}\color{SwissInk}\SwissAstroFrenchQuote{#1}\par}
     \vspace{2mm}
     {\usebeamerfont{swiss quote source}\color{SwissMuted}#2\par}
   \end{beamercolorbox}%

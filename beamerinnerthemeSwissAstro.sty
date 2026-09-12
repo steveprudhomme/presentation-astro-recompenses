@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerinnerthemeSwissAstro}[2026/09/10 v0.4.0 SwissAstro inner theme]
+\ProvidesPackage{beamerinnerthemeSwissAstro}[2026/09/11 v0.4.1 SwissAstro inner theme]
 
 \mode<presentation>
 
@@ -9,6 +9,8 @@
 \def\swissastro@kicker{ASTRONOMIE / CONFÉRENCE}
 \def\swissastro@series{SWISS ASTRO}
 \def\swissastro@sectionsubtitle{}
+\newif\ifSwissAstro@longtitle
+\SwissAstro@longtitlefalse
 
 \newcommand{\SwissAstroTitleImage}[1]{%
   \gdef\swissastro@titleimage{#1}%
@@ -17,6 +19,10 @@
 \newcommand{\SwissAstroKicker}[1]{\gdef\swissastro@kicker{#1}}
 \newcommand{\SwissAstroSeries}[1]{\gdef\swissastro@series{#1}}
 \newcommand{\SwissAstroSectionSubtitle}[1]{\gdef\swissastro@sectionsubtitle{#1}}
+% Manual variant for unusually long cover titles. It is intentionally opt-in:
+% SwissAstro never silently shrinks a title merely to make it fit.
+\newcommand{\SwissAstroLongTitle}{\global\SwissAstro@longtitletrue}
+\newcommand{\SwissAstroStandardTitle}{\global\SwissAstro@longtitlefalse}
 
 \setbeamertemplate{itemize item}{\raise0.25ex\hbox{\rule{0.8ex}{0.8ex}}}
 \setbeamertemplate{itemize subitem}{\raise0.35ex\hbox{\rule{0.55ex}{0.55ex}}}
@@ -30,7 +36,7 @@
 
     \node[anchor=north west,text=SwissMuted]
       at ([xshift=\SwissAstroMargin,yshift=-7mm]current page.north west)
-      {\usebeamerfont{swiss kicker}\MakeUppercase{\swissastro@kicker}};
+      {\usebeamerfont{swiss kicker}\SwissAstroHeadingSetup\MakeUppercase{\swissastro@kicker}};
     \node[anchor=north east,text=SwissMuted]
       at ([xshift=-\SwissAstroMargin,yshift=-7mm]current page.north east)
       {\usebeamerfont{swiss micro}\MakeUppercase{\swissastro@series}};
@@ -39,18 +45,23 @@
       ([xshift=\SwissAstroMargin,yshift=-12mm]current page.north west) --
       ([xshift=-\SwissAstroMargin,yshift=-12mm]current page.north east);
 
-    % The registration mark is a deliberate signature used only at the opening
-    % and closing, not as a repeated decorative element on section pages.
-    \node[anchor=west] at ([xshift=\SwissAstroMargin,yshift=23mm]current page.west)
+    \node[anchor=north west] at ([xshift=\SwissAstroMargin,yshift=-19mm]current page.north west)
       {\SwissAstroMark[SwissAccent]};
 
-    \node[anchor=west,text width=0.55\paperwidth,align=left,text=SwissInk]
-      at ([xshift=\SwissAstroMargin,yshift=8mm]current page.west)
-      {\SwissAstroTextSetup\usebeamerfont{title}\inserttitle};
+    % Title and subtitle form a real vertical stack. The subtitle is positioned
+    % from the measured bottom of the title instead of from a fixed page point.
+    \node[anchor=north west,text width=0.57\paperwidth,align=left,text=SwissInk]
+      (swissastrotitlenode)
+      at ([xshift=\SwissAstroMargin,yshift=-23mm]current page.north west)
+      {\ifSwissAstro@longtitle
+         \fontsize{23.5}{26}\selectfont\bfseries\SwissAstroHeadingSetup\inserttitle
+       \else
+         \usebeamerfont{title}\SwissAstroHeadingSetup\inserttitle
+       \fi};
 
     \node[anchor=north west,text width=0.53\paperwidth,align=left,text=SwissMuted]
-      at ([xshift=\SwissAstroMargin,yshift=-15mm]current page.west)
-      {\SwissAstroTextSetup\usebeamerfont{subtitle}\insertsubtitle};
+      at ([yshift=-4.2mm]swissastrotitlenode.south west)
+      {\usebeamerfont{subtitle}\SwissAstroTextSetup\insertsubtitle};
 
     \ifSwissAstro@hastitleimage
       \node[anchor=south east,inner sep=0pt]
@@ -87,22 +98,23 @@
   \begin{tikzpicture}[remember picture,overlay]
     \fill[SwissPaper] (current page.south west) rectangle (current page.north east);
     \node[anchor=north west,text=SwissMuted]
-      at ([xshift=\SwissAstroMargin,yshift=-7mm]current page.north west)
-      {\usebeamerfont{swiss kicker}\MakeUppercase{\swissastro@series\ / SECTION}};
+      at ([xshift=\SwissAstroMargin,yshift=-8mm]current page.north west)
+      {\usebeamerfont{swiss kicker}\SwissAstroHeadingSetup\MakeUppercase{\swissastro@series\ / SECTION}};
     \draw[SwissInk,line width=0.65pt]
-      ([xshift=\SwissAstroMargin,yshift=-16mm]current page.north west) --
-      ([xshift=-\SwissAstroMargin,yshift=-16mm]current page.north east);
+      ([xshift=\SwissAstroMargin,yshift=-14mm]current page.north west) --
+      ([xshift=-\SwissAstroMargin,yshift=-14mm]current page.north east);
 
-    \node[anchor=west,text=SwissAccent]
-      at ([xshift=\SwissAstroMargin,yshift=17mm]current page.west)
+    \node[anchor=north west,text=SwissAccent]
+      at ([xshift=\SwissAstroMargin,yshift=-24mm]current page.north west)
       {\usebeamerfont{section number}\ifnum\insertsectionnumber<10 0\fi\insertsectionnumber};
-    \node[anchor=west,text width=0.82\paperwidth,align=left,text=SwissInk]
-      at ([xshift=\SwissAstroMargin,yshift=-8mm]current page.west)
-      {\SwissAstroTextSetup\usebeamerfont{section page}\insertsectionhead};
+    \node[anchor=north west,text width=0.80\paperwidth,align=left,text=SwissInk]
+      (swissastrosectiontitle)
+      at ([xshift=\SwissAstroMargin,yshift=-41mm]current page.north west)
+      {\usebeamerfont{section page}\SwissAstroHeadingSetup\insertsectionhead};
     \ifstrempty{\swissastro@sectionsubtitle}{}{
       \node[anchor=north west,text width=0.72\paperwidth,align=left,text=SwissMuted]
-        at ([xshift=\SwissAstroMargin,yshift=-25mm]current page.west)
-        {\SwissAstroTextSetup\usebeamerfont{subtitle}\swissastro@sectionsubtitle};
+        at ([yshift=-3.6mm]swissastrosectiontitle.south west)
+        {\usebeamerfont{subtitle}\SwissAstroTextSetup\swissastro@sectionsubtitle};
     }
     \node[anchor=south east,text=SwissMuted]
       at ([xshift=-\SwissAstroMargin,yshift=8mm]current page.south east)

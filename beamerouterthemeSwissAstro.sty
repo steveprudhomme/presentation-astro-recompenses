@@ -1,30 +1,34 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerouterthemeSwissAstro}[2026/09/10 v0.4.0 SwissAstro outer theme]
+\ProvidesPackage{beamerouterthemeSwissAstro}[2026/09/11 v0.4.1 SwissAstro outer theme]
 
 \mode<presentation>
 
 \setbeamertemplate{headline}{}
+\newlength{\SwissAstroProgressWidth}
+\newcount\SwissAstroProgressTotal
 
+% The title box now owns its real height. v0.4.0 used a large negative skip
+% after the title which made body content invade the footer safe area on dense
+% slides and weakened the common left/top axes.
 \setbeamertemplate{frametitle}{%
   \nointerlineskip
   \begin{beamercolorbox}[wd=\paperwidth,leftskip=\SwissAstroMargin,rightskip=\SwissAstroMargin,sep=0pt]{frametitle}
-    \vspace{4.2mm}
-    {\SwissAstroTextSetup\usebeamerfont{swiss kicker}\color{SwissMuted}%
+    \vspace{4.4mm}
+    {\usebeamerfont{swiss kicker}\SwissAstroHeadingSetup\color{SwissMuted}%
       \ifstrempty{\insertsectionhead}{\MakeUppercase{\swissastro@series}}{\MakeUppercase{\insertsectionhead}}\par}
-    \vspace{1.2mm}
-    {\SwissAstroTextSetup\usebeamerfont{frametitle}\insertframetitle\par}
+    \vspace{1.1mm}
+    {\usebeamerfont{frametitle}\SwissAstroHeadingSetup\insertframetitle\par}
     \ifx\insertframesubtitle\@empty\else
-      \vspace{0.8mm}{\SwissAstroTextSetup\usebeamerfont{framesubtitle}\color{SwissMuted}\insertframesubtitle\par}
+      \vspace{1.1mm}{\usebeamerfont{framesubtitle}\SwissAstroTextSetup\color{SwissMuted}\insertframesubtitle\par}
     \fi
-    \vspace{2.3mm}
+    \vspace{1.8mm}
     {\color{SwissInk}\rule{\dimexpr\paperwidth-2\SwissAstroMargin\relax}{0.65pt}}
-    \vspace{1.5mm}
+    \vspace{0.9mm}
   \end{beamercolorbox}%
-  \vspace{-9mm}% tighten the editorial grid after Beamer's title box
+  \vspace{-3.2mm}% compensate Beamer frame-title glue without invading the rule
 }
 
-% The footer is intentionally quiet: author + frame number only. Repeating the
-% full talk title on every slide competed with the main content in v0.3.x.
+% The footer is intentionally quiet: author + frame number only.
 \setbeamertemplate{footline}{%
   \leavevmode
   \begin{beamercolorbox}[wd=\paperwidth,ht=4.9mm,dp=1.25mm,leftskip=\SwissAstroMargin,rightskip=\SwissAstroMargin]{footline}
@@ -35,7 +39,16 @@
   \end{beamercolorbox}%
   \ifSwissAstro@progress
     \ifnum\inserttotalframenumber>0
-      \pgfmathsetlengthmacro{\SwissAstroProgressWidth}{\paperwidth*\insertframenumber/\inserttotalframenumber}%
+      % Divide the dimension before multiplying it. On the first pass Beamer
+      % may still report a total of 1; cap the denominator at the current frame
+      % so an unknown total can never expand the bar beyond \paperwidth.
+      \SwissAstroProgressTotal=\inserttotalframenumber\relax
+      \ifnum\SwissAstroProgressTotal<\insertframenumber\relax
+        \SwissAstroProgressTotal=\insertframenumber\relax
+      \fi
+      \setlength{\SwissAstroProgressWidth}{\paperwidth}%
+      \divide\SwissAstroProgressWidth by \SwissAstroProgressTotal
+      \multiply\SwissAstroProgressWidth by \insertframenumber\relax
       \begin{tikzpicture}[remember picture,overlay]
         \fill[SwissRule] (current page.south west) rectangle
           ([yshift=0.65mm]current page.south east);
